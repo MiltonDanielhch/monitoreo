@@ -1,0 +1,8 @@
+# .mise.toml
+# Control de versiones de toolchain para el monorepo de monitoreo
+# Vinculado con ADR-0012-herramientas-desarrollo.md
+
+[tools]
+rust = "1.95"
+node = "24.16.0"
+pnpm = "10.27.0"

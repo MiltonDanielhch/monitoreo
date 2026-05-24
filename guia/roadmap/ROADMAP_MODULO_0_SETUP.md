@@ -13,8 +13,8 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | ADR Asociado | Progreso |
 | --- | --- | --- | --- |
-| **0.1** | Inicialización con `mise` y DB Nativa | `ADR-0004`, `ADR-0012` | [ ] |
-| **0.2** | Estructura de directorios Hexagonal | `ADR-0001` | [ ] |
+| **0.1** | Inicialización con `mise` y DB Nativa | `ADR-0004`, `ADR-0012` | [x] |
+| **0.2** | Estructura de directorios Hexagonal | `ADR-0001` | [x] |
 | **0.3** | Workspace Cargo (Backend) | `ADR-0003`, `ADR-0007` | [ ] |
 | **0.4** | Variables de Entorno y Conexión MySQL | `ADR-0002`, `ADR-0004` | [ ] |
 | **0.5** | API Axum — Healthcheck + CORS | `ADR-0003`, `ADR-0011` | [ ] |
@@ -33,7 +33,7 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 > 
 > 
 
-* [ ] **0.1.1 — Configurar el entorno unificado con `mise**`
+* [x] **0.1.1 — Configurar el entorno unificado con `mise**`
 * Crear el archivo `.mise.toml` en la raíz de tu carpeta de trabajo para asegurar que todos los compiladores queden congelados en la versión correcta:
 
 
@@ -64,7 +64,7 @@ pnpm --version
 
 ```
 
-* [ ] **0.1.2 — Preparar el esquema en MySQL Workbench**
+* [x] **0.1.2 — Preparar el esquema en MySQL Workbench**
 * Abre MySQL Workbench y conéctate a tu instancia local tradicional de desarrollo (`127.0.0.1:3306`).
 * Ejecuta una nueva pestaña de consulta SQL para instanciar la base de datos del laboratorio aislada con soporte nativo completo para emojis y caracteres internacionales:
 
@@ -78,7 +78,7 @@ CREATE DATABASE IF NOT EXISTS redes_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 
 ```
 
-* [ ] **0.1.3 — Instalar el monitor inteligente del compilador**
+* [x] **0.1.3 — Instalar el monitor inteligente del compilador**
   * Instala `bacon` de forma global para evitar el uso excesivo de memoria RAM e hilos de CPU en segundo plano durante el desarrollo activo:
   ```bash
   cargo install bacon
@@ -94,7 +94,7 @@ CREATE DATABASE IF NOT EXISTS redes_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 > 
 > 
 
-* [ ] **0.2.1 — Generar el layout físico del monorepo**
+* [x] **0.2.1 — Generar el layout físico del monorepo**
 * Ejecuta el siguiente comando en la raíz para estructurar de golpe todas las capas independientes de la arquitectura limpia:
 
 
@@ -107,7 +107,7 @@ mkdir -p data/migrations crates/domain crates/database crates/infrastructure app
 
 ```
 
-* [ ] **0.2.2 — Validar el árbol resultante**
+* [x] **0.2.2 — Validar el árbol resultante**
   ```text
   redes/
   ├── Cargo.toml              # Raíz del Workspace de Rust
