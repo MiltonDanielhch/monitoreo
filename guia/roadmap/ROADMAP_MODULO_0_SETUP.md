@@ -15,13 +15,13 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 | --- | --- | --- | --- |
 | **0.1** | Inicialización con `mise` y DB Nativa | `ADR-0004`, `ADR-0012` | [x] |
 | **0.2** | Estructura de directorios Hexagonal | `ADR-0001` | [x] |
-| **0.3** | Workspace Cargo (Backend) | `ADR-0003`, `ADR-0007` | [ ] |
-| **0.4** | Variables de Entorno y Conexión MySQL | `ADR-0002`, `ADR-0004` | [ ] |
-| **0.5** | API Axum — Healthcheck + CORS | `ADR-0003`, `ADR-0011` | [ ] |
-| **0.6** | SvelteKit + Tailwind v4 (Frontend) | `ADR-0017` | [ ] |
-| **0.7** | Fetch End-to-End Reactivo | `ADR-0017`, `ADR-0020` | [ ] |
-| **0.8** | Automatización con Justfile y Test E2E | `ADR-0011`, `ADR-0012` | [ ] |
-| **M0** | **Módulo 0 Total** | **Génesis del Lab 3030** | **[ ]** |
+| **0.3** | Workspace Cargo (Backend) | `ADR-0003`, `ADR-0007` | [x] |
+| **0.4** | Variables de Entorno y Conexión MySQL | `ADR-0002`, `ADR-0004` | [x] |
+| **0.5** | API Axum — Healthcheck + CORS | `ADR-0003`, `ADR-0011` | [x] |
+| **0.6** | SvelteKit + Tailwind v4 (Frontend) | `ADR-0017` | [x] |
+| **0.7** | Fetch End-to-End Reactivo | `ADR-0017`, `ADR-0020` | [x] |
+| **0.8** | Automatización con Justfile y Test E2E | `ADR-0011`, `ADR-0012` | [x] |
+| **M0** | **Módulo 0 Total** | **Génesis del Lab 3030** | **[x]** |
 
 ---
 
@@ -137,7 +137,7 @@ mkdir -p data/migrations crates/domain crates/database crates/infrastructure app
 > 
 > 
 
-* [ ] **0.3.1 — Configurar `Cargo.toml` en la Raíz**
+* [x] **0.3.1 — Configurar `Cargo.toml` en la Raíz**
 ```toml
 [workspace]
 members = [
@@ -170,7 +170,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 ```
 
-* [ ] **0.3.2 — Configurar `crates/domain/Cargo.toml`**
+* [x] **0.3.2 — Configurar `crates/domain/Cargo.toml`**
   ```toml
   [package]
   name = "domain"
@@ -184,7 +184,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 ```
 
-* [ ] **0.3.3 — Configurar `crates/database/Cargo.toml**`
+* [x] **0.3.3 — Configurar `crates/database/Cargo.toml`**`
 ```toml
 [package]
 name = "database"
@@ -203,7 +203,7 @@ tracing = { workspace = true }
 
 ```
 
-* [ ] **0.3.4 — Configurar `crates/infrastructure/Cargo.toml`**
+* [x] **0.3.4 — Configurar `crates/infrastructure/Cargo.toml`**
   ```toml
   [package]
   name = "infrastructure"
@@ -223,7 +223,7 @@ tracing = { workspace = true }
 
 ```
 
-* [ ] **0.3.5 — Configurar `apps/api/Cargo.toml**`
+* [x] **0.3.5 — Configurar `apps/api/Cargo.toml`**`
 ```toml
 [package]
 name = "api"
@@ -245,7 +245,7 @@ anyhow = { workspace = true }
 
 ```
 
-* [ ] **0.3.6 — Inicializar el entorno Bacon**
+* [x] **0.3.6 — Validar compilación del workspace**
   * Ejecuta `bacon init` en la raíz del monorepo. Abre una pestaña secundaria en tu terminal y arranca `bacon`. El sistema debe compilar los crates vacíos y reportar el estado inicial en verde (`Ok`).
 
 ---
@@ -256,7 +256,7 @@ anyhow = { workspace = true }
 > * `ADR-0002-configuracion-tipeada-secretos.md` -> Despliegue seguro de credenciales locales aisladas de la historia del control de versiones.
 > * `ADR-0004-persistencia-mysql-seaorm-nativo.md` -> Ajuste fino del pool de conexiones asíncronas para resguardar recursos en hardware limitado de desarrollo local.
 
-* [ ] **0.4.1 — Estructurar `.env.local` al estilo Laravel**
+* [x] **0.4.1 — Estructurar `.env.local` al estilo Laravel**
   * Crea el archivo `.env.local` en la raíz de tu monorepo apuntando a los accesos directos configurados en tu Workbench:
   ```env
   SERVER_PORT=3000
@@ -266,7 +266,7 @@ anyhow = { workspace = true }
 
 ```
 
-* [ ] **0.4.2 — Escribir el adaptador de base de datos en `crates/database/src/lib.rs**`
+* [x] **0.4.2 — Escribir el adaptador de base de datos en `crates/database/src/lib.rs**`
 ```rust
 use sea_orm::{Database, DatabaseConnection, DbErr};
 use std::time::Duration;
@@ -299,7 +299,7 @@ pub async fn establish_connection(db_url: &str) -> Result<DatabaseConnection, Db
 > * `ADR-0003-stack-backend-rust-axum.md` -> Diseño desacoplado del enrutador HTTP e implementación de políticas seguras de orígenes cruzados (CORS) para el desarrollo local.
 > * `ADR-0011-estandares-desarrollo.md` -> Estandarización de contratos de datos con respuestas JSON estructuradas e inyección de dependencias por estados seguros compartidos.
 
-* [ ] **0.5.1 — Desarrollar el enrutador en `crates/infrastructure/src/lib.rs`**
+* [x] **0.5.1 — Desarrollar el enrutador en `crates/infrastructure/src/lib.rs`**
   ```rust
   use axum::{routing::get, Json, Router, extract::State};
   use sea_orm::DatabaseConnection;
@@ -340,7 +340,7 @@ pub async fn establish_connection(db_url: &str) -> Result<DatabaseConnection, Db
 
 ```
 
-* [ ] **0.5.2 — Implementar el punto de entrada principal en `apps/api/src/main.rs**`
+* [x] **0.5.2 — Implementar el punto de entrada principal en `apps/api/src/main.rs**`
 ```rust
 use database::establish_connection;
 use infrastructure::{create_router, AppState};

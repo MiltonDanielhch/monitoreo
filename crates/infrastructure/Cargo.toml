@@ -1,0 +1,19 @@
+# crates/infrastructure/Cargo.toml
+# Adaptador de entrada - Rutas, Controladores y Enrutador de Axum
+# Vinculado con ADR-0003-stack-backend-rust-axum.md
+
+[package]
+name = "infrastructure"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+domain = { path = "../domain" }
+database = { path = "../database" }
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }

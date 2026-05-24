@@ -1,0 +1,13 @@
+# crates/domain/Cargo.toml
+# Núcleo puro - Entidades y Errores (0 dependencias externas de frameworks)
+# Vinculado con ADR-0001-arquitectura-hexagonal.md y ADR-0007-manejo-errores.md
+
+[package]
+name = "domain"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }

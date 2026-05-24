@@ -19,7 +19,7 @@
 
 | Fase / Módulo | Archivo de Ruta | Estado | Progreso |
 |------|---------|--------|----------|
-| 🔄 **M0: Setup & Workspace** | `ROADMAP_MODULO_0_SETUP.md` | **EN PROGRESO** | 25% |
+| ✅ **M0: Setup & Workspace** | `ROADMAP_MODULO_0_SETUP.md` | **COMPLETADO** | 100% |
 | ⏳ **M1: Autenticación Core** | `ROADMAP_MODULO_1_AUTH.md` | Pendiente | 0% |
 | ⏳ **M2: Configuración Tipeada** | `ROADMAP_MODULO_2_CONFI_SISTEMA.md` | Pendiente | 0% |
 | ⏳ **M3: Dashboard Core** | `ROADMAP_MODULO_3_DASHBOARD.md` | Pendiente | 0% |

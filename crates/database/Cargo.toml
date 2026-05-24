@@ -1,0 +1,14 @@
+# crates/database/Cargo.toml
+# Adaptador de persistencia con Sea-ORM + MySQL
+# Vinculado con ADR-0004-persistencia-mysql-seaorm-docker.md
+
+[package]
+name = "database"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+domain = { path = "../domain" }
+sea-orm = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }

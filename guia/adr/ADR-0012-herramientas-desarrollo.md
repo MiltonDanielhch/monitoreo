@@ -130,3 +130,58 @@ La suite de Git-Hooks garantiza el formato, la compilación limpia, la ausencia 
 | `typos` | Corrector ortográfico estático de código fuente y documentos. | `1.46.x` | ✅ Activa |
 
 ---
+
+## 🪟 Configuración Específica para Windows PowerShell
+
+### Activación de mise en Windows
+
+Para que mise intercepte correctamente los ejecutables en Windows PowerShell, es necesario activar mise en cada sesión:
+
+1. Crear el archivo de configuración del proyecto
+Para decirle a mise que en la carpeta C:\laravel\monitoreo quieres usar específicamente Node 24, ejecuta:
+
+```PowerShell
+mise use node@24
+```
+Esto descargará Node 24 (si no lo tienes) y creará un archivo automático llamado mise.toml en esa carpeta.
+
+```powershell
+mise activate pwsh | Out-String | Invoke-Expression
+```
+
+Después de ejecutar este comando, verifica que las versiones correctas estén activas:
+```powershell
+node --version    # Debe mostrar v24.16.0
+pnpm --version    # Debe mostrar 10.27.0
+```
+
+### Automatización Permanente (Perfil de PowerShell)
+
+Para que mise se active automáticamente en cada nueva sesión de PowerShell, agrega el comando de activación a tu perfil:
+
+```powershell
+# Si el perfil no existe, créalo primero
+New-Item -ItemType File -Path $PROFILE -Force
+
+# Agrega el comando de activación de mise
+Add-Content $PROFILE 'mise activate pwsh | Out-String | Invoke-Expression'
+```
+
+### Configuración del Proyecto
+
+El archivo `.mise.toml` en la raíz del proyecto ya especifica las versiones correctas:
+```toml
+[tools]
+rust = "1.95"
+node = "24.16.0"
+pnpm = "10.27"
+```
+
+mise detecta automáticamente este archivo y usa las versiones especificadas cuando navegas al directorio del proyecto.
+
+### Solución de Problemas
+
+Si `node --version` sigue mostrando la versión incorrecta después de activar mise:
+1. Verifica que `C:\tools` esté al inicio de tu PATH (antes de otras rutas de Node)
+2. Reinicia la terminal después de modificar el PATH
+3. Ejecuta nuevamente `mise activate pwsh | Out-String | Invoke-Expression`

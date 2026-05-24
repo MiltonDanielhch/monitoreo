@@ -1,0 +1,18 @@
+# apps/api/Cargo.toml
+# Binario ejecutable - Orquestador y arranque del backend
+# Vinculado con ADR-0003-stack-backend-rust-axum.md y ADR-0007-manejo-errores.md
+
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+domain = { path = "../../crates/domain" }
+database = { path = "../../crates/database" }
+infrastructure = { path = "../../crates/infrastructure" }
+axum = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }
