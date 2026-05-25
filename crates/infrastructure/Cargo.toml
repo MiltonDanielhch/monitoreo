@@ -10,10 +10,21 @@ edition = "2024"
 [dependencies]
 domain = { path = "../domain" }
 database = { path = "../database" }
+shared_types = { path = "../shared_types" }
 axum = { workspace = true }
 tower = { workspace = true }
 tower-http = { workspace = true }
+axum-governor = "2"
 serde = { workspace = true }
 serde_json = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }
+argon2 = "0.5"
+jsonwebtoken = "9"
+secrecy = "0.10"
+rand_core = "0.6"
+sha2 = "0.11"
+hex = "0.4"
+chrono = { workspace = true }
+uuid = { workspace = true }
+async-trait = "0.1"

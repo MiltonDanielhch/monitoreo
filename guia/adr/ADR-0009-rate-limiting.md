@@ -1,4 +1,4 @@
-# Resumen — ADR 0009: Rate Limiting con tower-governor
+# Resumen — ADR 0009: Rate Limiting con axum-governor
 
 **Autores:** Milton Hipamo / Laboratorio 3030
 
@@ -10,11 +10,13 @@
 
 **Problema:** La API expuesta en el entorno regional es vulnerable a ataques de fuerza bruta por diccionario, denegación de servicio (DoS) por inundación de peticiones, scraping automatizado de la topología de red y agotamiento de recursos de CPU provocado por llamadas maliciosas masivas a los endpoints de autenticación que procesan el algoritmo criptográfico pesado `argon2id` (~200ms por iteración).
 
-**Decisión:** Implementar **`tower-governor`** como la capa de middleware única y centralizada de Rate Limiting, perfectamente acoplada al ecosistema de Axum y Tower. El control de flujo se divide estratégicamente en tres políticas:
+**Decisión:** Implementar **`axum-governor`** como la capa de middleware única y centralizada de Rate Limiting, perfectamente acoplada al ecosistema de Axum. El control de flujo se divide estratégicamente en tres políticas:
 
 * Límites severos y con ventanas de tiempo extendidas en endpoints críticos de identidad.
 * Límites de ráfagas dinámicos para el consumo ordinario de la API del dashboard.
 * Exclusión explícita y de cero coste para rutas internas de monitorización y documentación.
+
+**Justificación del cambio:** Durante la implementación de Slice 1.6, se encontró que `tower-governor` 0.8 tiene una API compleja que requiere parámetros genéricos específicos (`K, M, RespBody`) causando errores de compilación difíciles de resolver. `axum-governor` 2.0 ofrece una API más simple y moderna diseñada específicamente para Axum 0.8, con mejor manejo de extractores y configuración más intuitiva.
 
 ---
 
@@ -27,7 +29,7 @@
   [ Caddy Proxy Reverso ]   ──► Inyecta: X-Real-IP / X-Forwarded-For
          │
          ▼
-  [ tower-governor Middleware ]
+  [ axum-governor Middleware ]
          │
          ├──► Política Auth (Ventana por minuto, ráfaga milimétrica)
          ├──► Política API General (Ventana por segundo, alta concurrencia)
@@ -52,7 +54,7 @@
 | `/auth/reset-password` | 5 / 15 min | 3 | Prevención de secuestro de flujos de recuperación. |
 | `/auth/refresh` | 20 / 1 min | 10 | Soporte para alta concurrencia legítima de UI. |
 
-> **Nota de Diseño:** Los límites de identidad se evalúan en ventanas de minutos. La combinación de la latencia controlada de `argon2id` con la restricción GCRA de `tower-governor` vuelve económicamente inviable un ataque de fuerza bruta por software.
+> **Nota de Diseño:** Los límites de identidad se evalúan en ventanas de minutos. La combinación de la latencia controlada de `argon2id` con la restricción GCRA de `axum-governor` vuelve económicamente inviable un ataque de fuerza bruta por software.
 
 ### 2. Capa de API Autenticada General
 
@@ -148,7 +150,6 @@ El backend procesa esta información utilizando `SmartIpKeyExtractor` configurad
 
 | Herramienta / Crate | Versión | Propósito en el Ecosistema | Justificación / Mecanismo |
 | --- | --- | --- | --- |
-| `tower-governor` | `0.8.x` | Middleware GCRA para Tower/Axum. | Provee la integración directa con los routers de Axum sin degradar el rendimiento por hilos. |
-| `axum-client-ip` | `1.3.x` | Extracción segura de IPs reales. | Decodifica de forma segura los encabezados de proxies reversos protegiendo contra IP-Spoofing. |
+| `axum-governor` | `2.0.x` | Middleware GCRA para Axum. | API moderna y simple diseñada específicamente para Axum 0.8, con mejor manejo de extractores y configuración intuitiva. |
 | `governor` | `0.10.x` | Algoritmo GCRA subyacente. | Algoritmo genérico de tasa de celdas virtuales (GCRA). Almacena el estado en tipos primitivos `AtomicU64` con operaciones CAS (*Compare-And-Swap*), libre de locks pesados. |
 | `tracing` | workspace | Telemetría estructural. | Registra alertas críticas cuando una IP entra en estado de bloqueo prolongado para auditoría forense. |

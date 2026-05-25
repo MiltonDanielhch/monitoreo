@@ -4,3 +4,10 @@
 
 // Este crate contiene la lógica de negocio pura e inmutable
 // No se permiten dependencias de frameworks web, bases de datos o librerías de red
+
+pub mod errors;
+pub mod models;
+
+pub use errors::{DomainError, Result};
+pub use models::user::User;
+pub use models::session::Session;
