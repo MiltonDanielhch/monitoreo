@@ -3,5 +3,7 @@
 // Vinculado con ADR-0003-stack-backend-rust-axum.md
 
 pub mod auth_handler;
+pub mod settings_handler;
 
-pub use auth_handler::{login, refresh};
+pub use auth_handler::{login, refresh, logout};
+pub use settings_handler::{get_thresholds, update_thresholds};

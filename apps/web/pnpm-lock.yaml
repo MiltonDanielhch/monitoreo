@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@tanstack/svelte-query':
+        specifier: ^6.1.33
+        version: 6.1.33(svelte@5.55.9(@typescript-eslint/types@8.59.4))
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.4
@@ -405,6 +412,14 @@ packages:
     resolution: {integrity: sha512-t6J3OrB5Fc0ExuhohouH0fWUGMYL6PTLhW+E7zIk/pdbnJARZDCwjBznFnkh5ynRnIRSI4YjtTH0t6USjJISrw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@tanstack/query-core@5.100.14':
+    resolution: {integrity: sha512-5X41dGpxgeaHISCRW2oYwcSycZeULZzAunaudXT9ov1KOTj9xwt0CH6hbwqP1/z74ZWF7rYFnDpyYH07XFcZew==}
+
+  '@tanstack/svelte-query@6.1.33':
+    resolution: {integrity: sha512-hdbGeLLOIfkrB+/leytCON+tjpSbkO36OsXxrTkPpwC7p8jK36DaoBRR1FO1Z0jOg/fmfCs26lafzFsWXV5W9w==}
+    peerDependencies:
+      svelte: ^5.25.0
 
   '@testing-library/svelte-core@1.0.0':
     resolution: {integrity: sha512-VkUePoLV6oOYwSUvX6ShA8KLnJqZiYMIbP2JW2t0GLWLkJxKGvuH5qrrZBV/X7cXFnLGuFQEC7RheYiZOW68KQ==}
@@ -1299,6 +1314,9 @@ packages:
   zimmerframe@1.1.4:
     resolution: {integrity: sha512-B58NGBEoc8Y9MWWCQGl/gq9xBCe4IiKM0a2x7GZdQKOW5Exr8S1W24J6OgM1njK8xCRGvAJIL/MxXHf6SkmQKQ==}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
 snapshots:
 
   '@blazediff/core@1.9.1': {}
@@ -1562,6 +1580,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.0
       tailwindcss: 4.3.0
       vite: 8.0.14(@types/node@24.12.4)(jiti@2.7.0)
+
+  '@tanstack/query-core@5.100.14': {}
+
+  '@tanstack/svelte-query@6.1.33(svelte@5.55.9(@typescript-eslint/types@8.59.4))':
+    dependencies:
+      '@tanstack/query-core': 5.100.14
+      svelte: 5.55.9(@typescript-eslint/types@8.59.4)
 
   '@testing-library/svelte-core@1.0.0(svelte@5.55.9(@typescript-eslint/types@8.59.4))':
     dependencies:
@@ -2381,3 +2406,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zimmerframe@1.1.4: {}
+
+  zod@4.4.3: {}

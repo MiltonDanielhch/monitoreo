@@ -5,13 +5,15 @@
 // Este crate contiene la capa de transporte HTTP y middlewares
 // Los handlers deben ser delgados y delegar la lógica a la capa de aplicación
 
+pub mod config;
 pub mod crypto;
 pub mod handlers;
 pub mod middleware;
 pub mod workers;
 
-use axum::{routing::{get, post}, Json, Router, extract::State};
-use database::{DatabaseConnection, AuthRepository};
+use axum::{routing::{get, post, put}, Json, Router, extract::State};
+use database::{DatabaseConnection, AuthRepository, SettingsRepository};
+use crate::config::RuntimeConfig;
 use tower_http::cors::{CorsLayer, Any};
 use tower_http::trace::TraceLayer;
 use serde::Serialize;
@@ -22,6 +24,8 @@ use secrecy::SecretString;
 pub struct AppState {
     pub db: DatabaseConnection,
     pub auth_repo: Arc<AuthRepository>,
+    pub settings_repo: Arc<SettingsRepository>,
+    pub runtime_config: RuntimeConfig,
     pub paseto_secret: SecretString,
 }
 
@@ -43,6 +47,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/auth/login", post(handlers::auth_handler::login))
         .route("/api/auth/refresh", post(handlers::auth_handler::refresh))
         .route("/api/auth/logout", post(handlers::auth_handler::logout))
+        .route("/api/settings/thresholds", get(handlers::settings_handler::get_thresholds))
+        .route("/api/settings/thresholds", put(handlers::settings_handler::update_thresholds))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

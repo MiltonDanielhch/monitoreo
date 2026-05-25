@@ -30,12 +30,20 @@
     <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <button
-                onclick={handleLogout}
-                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors"
-            >
-                Cerrar Sesión
-            </button>
+            <div class="flex gap-4">
+                <a
+                    href="/dashboard/settings"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors"
+                >
+                    Configuración
+                </a>
+                <button
+                    onclick={handleLogout}
+                    class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors"
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
         </div>
 
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">

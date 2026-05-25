@@ -5,15 +5,15 @@
 // Este es el punto de entrada principal del servidor Axum
 // Realiza la inyección de dependencias y el arranque del runtime Tokio
 
-use database::establish_connection;
-use database::AuthRepository;
-use infrastructure::{create_router, AppState};
+use database::{establish_connection, AuthRepository, SettingsRepository};
+use infrastructure::{create_router, AppState, config::RuntimeConfig};
 use tokio::net::TcpListener;
 use std::env;
 use std::sync::Arc;
 use secrecy::SecretString;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use tracing_subscriber::fmt;
+use domain::{ThresholdValue, ThresholdSettings};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -41,12 +41,23 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("Inicializando repositorio de autenticación...");
     let auth_repo = Arc::new(AuthRepository::new(db_connection.clone()));
+    let settings_repo = Arc::new(SettingsRepository::new(db_connection.clone()));
+
+    let thresholds = ThresholdSettings {
+        ping_ms: ThresholdValue::new(100.0, 500.0).unwrap(),
+        latency_ms: ThresholdValue::new(150.0, 800.0).unwrap(),
+        packet_loss_percent: ThresholdValue::new(5.0, 15.0).unwrap(),
+    };
+    let runtime_config = RuntimeConfig::new(thresholds, vec![], 60);
+
     let paseto_secret = env::var("JWT_SECRET")
         .unwrap_or_else(|_| "default-secret-32-bytes-long-12345678".to_string());
-    
-    let state = AppState { 
+
+    let state = AppState {
         db: db_connection,
         auth_repo,
+        settings_repo,
+        runtime_config,
         paseto_secret: SecretString::new(paseto_secret.into()),
     };
     

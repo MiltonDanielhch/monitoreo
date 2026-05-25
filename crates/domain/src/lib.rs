@@ -9,5 +9,4 @@ pub mod errors;
 pub mod models;
 
 pub use errors::{DomainError, Result};
-pub use models::user::User;
-pub use models::session::Session;
+pub use models::{User, Session, SystemSettings, ThresholdSettings, ThresholdValue, Location, SystemSetting, SettingValueType};

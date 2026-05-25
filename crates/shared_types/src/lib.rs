@@ -44,3 +44,23 @@ pub struct UserInfo {
 pub struct LogoutRequest {
     pub refresh_token: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct ThresholdValueDto {
+    pub warning: f64,
+    pub critical: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct ThresholdUpdateRequest {
+    pub ping_ms: ThresholdValueDto,
+    pub latency_ms: ThresholdValueDto,
+    pub packet_loss_percent: ThresholdValueDto,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct ThresholdResponse {
+    pub ping_ms: ThresholdValueDto,
+    pub latency_ms: ThresholdValueDto,
+    pub packet_loss_percent: ThresholdValueDto,
+}

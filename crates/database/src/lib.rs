@@ -12,6 +12,7 @@ pub mod entities;
 pub mod repositories;
 
 pub use repositories::AuthRepository;
+pub use repositories::SettingsRepository;
 
 pub async fn establish_connection(db_url: &str) -> Result<DatabaseConnection, DbErr> {
     let mut opt = sea_orm::ConnectOptions::new(db_url.to_owned());

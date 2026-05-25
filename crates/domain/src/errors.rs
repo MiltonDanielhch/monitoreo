@@ -29,6 +29,9 @@ pub enum DomainError {
     #[error("Límite de velocidad excedido")]
     RateLimitExceeded,
 
+    #[error("Valor de configuración inválido: {0}")]
+    InvalidSettingValue(String),
+
     #[error("Error de infraestructura: {0}")]
     Infrastructure(String),
 }
