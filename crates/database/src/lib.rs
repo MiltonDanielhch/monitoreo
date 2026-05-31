@@ -17,6 +17,7 @@ pub use repositories::DashboardRepository;
 pub use repositories::NetworkFileRepository;
 pub use repositories::NotificationRepository;
 pub use repositories::SettingsRepository;
+pub use repositories::TelemetryRepository;
 
 pub async fn establish_connection(db_url: &str) -> Result<DatabaseConnection, DbErr> {
     let mut opt = sea_orm::ConnectOptions::new(db_url.to_owned());

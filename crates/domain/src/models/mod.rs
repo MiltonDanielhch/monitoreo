@@ -8,6 +8,7 @@ pub mod settings;
 pub mod notification;
 pub mod infrastructure_file;
 pub mod audit;
+pub mod telemetry;
 
 pub use user::User;
 pub use session::Session;
@@ -19,3 +20,4 @@ pub use notification::{
 };
 pub use infrastructure_file::{NetworkFileType, FileValidator, InfrastructureFile, NetworkStoragePort};
 pub use audit::{AuditLog, AuditAction, AuditFilters, AuditPort};
+pub use telemetry::{RemoteAgent, AgentType, AgentStatus, TelemetryMetrics, TelemetryBatch, TelemetryPort};

@@ -11,6 +11,7 @@ pub mod handlers;
 pub mod middleware;
 pub mod notifications;
 pub mod storage;
+pub mod telemetry;
 pub mod workers;
 
 use axum::{routing::{get, post, put}, Json, Router, extract::State};
@@ -63,6 +64,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/v1/infrastructure/files", get(handlers::infrastructure_file_handler::list_files))
         .route("/api/v1/audit/logs", get(handlers::audit_handler::get_audit_logs))
         .route("/api/v1/audit/entity-history", get(handlers::audit_handler::get_entity_history))
+        .route("/api/v1/telemetry/ingest", post(handlers::telemetry_handler::ingest_telemetry))
+        .route("/api/v1/telemetry/register", post(handlers::telemetry_handler::register_agent))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

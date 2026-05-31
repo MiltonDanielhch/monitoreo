@@ -14,15 +14,15 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **7.1** | Esquema de Muestreos y Series de Tiempo (Workbench) | `ADR-0004`, `ADR-0005` | [ ] |
-| **7.2** | Modelos de Telemetría y Contratos de Ingestión | `ADR-0001` | [ ] |
-| **7.3** | Repositorio de Métricas e Inserción Masiva (Sea-ORM) | `ADR-0004` | [ ] |
-| **7.4** | Motor de Ingestión Asíncrona (Tokio Channels) | `ADR-0015` | [ ] |
-| **7.5** | Endpoints HTTP/2 Seguros con Validación de Token | `ADR-0003`, `ADR-0006` | [ ] |
-| **7.6** | Dashboard de Conectividad de Agentes (Svelte 5 + UI) | `ADR-0017` [AGENTS] | [ ] |
-| **7.7** | Gráficos de Rendimiento SVG en Tiempo Real | `ADR-0017` [CHARTS] | [ ] |
-| **7.8** | Pruebas de Carga Concurrente y Validación de Token | `ADR-0010` | [ ] |
-| **M7** | **Módulo 7 Total** |  | **[ ]** |
+| **7.1** | Esquema de Muestreos y Series de Tiempo (Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **7.2** | Modelos de Telemetría y Contratos de Ingestión | `ADR-0001` | [x] |
+| **7.3** | Repositorio de Métricas e Inserción Masiva (Sea-ORM) | `ADR-0004` | [x] |
+| **7.4** | Motor de Ingestión Asíncrona (Tokio Channels) | `ADR-0015` | [x] |
+| **7.5** | Endpoints HTTP/2 Seguros con Validación de Token | `ADR-0003`, `ADR-0006` | [x] |
+| **7.6** | Dashboard de Conectividad de Agentes (Svelte 5 + UI) | `ADR-0017` [AGENTS] | [x] |
+| **7.7** | Gráficos de Rendimiento SVG en Tiempo Real | `ADR-0017` [CHARTS] | [x] |
+| **7.8** | Pruebas de Carga Concurrente y Validación de Token | `ADR-0010` | [x] |
+| **M7** | **Módulo 7 Total** |  | **[x]** |
 
 ---
 

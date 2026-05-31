@@ -3,7 +3,7 @@
 <!-- Vinculado con ADR-0017 (Frontend SvelteKit/Svelte 5) -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { Building2, Monitor, BarChart3, AlertTriangle, ShieldAlert, Settings, ChevronLeft, ChevronRight, Home, Mail } from 'lucide-svelte';
+	import { Building2, Monitor, BarChart3, AlertTriangle, ShieldAlert, Settings, ChevronLeft, ChevronRight, Home, Mail, Server } from 'lucide-svelte';
 
 	let collapsed = $state(false);
 
@@ -16,6 +16,7 @@
 		{ href: '/dashboard/notifications', label: 'Notificaciones', icon: Mail, description: 'Historial de alertas enviadas' },
 		{ href: '/dashboard/infrastructure', label: 'Infraestructura', icon: Settings, description: 'Archivos técnicos y topologías' },
 		{ href: '/dashboard/audit', label: 'Auditoría', icon: ShieldAlert, description: 'Historial inmutable de acciones' },
+		{ href: '/dashboard/agents', label: 'Agentes', icon: Server, description: 'Conectividad de agentes remotos' },
 	];
 
 	const bottomItems = [
