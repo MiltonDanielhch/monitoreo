@@ -78,6 +78,7 @@ pub struct Location {
     pub name: String,
     pub code: String,
     pub region: String,
+    pub parent_id: Option<uuid::Uuid>,
     pub latitude: Option<f64>,
     pub longitude: Option<f64>,
     pub is_active: bool,
@@ -91,6 +92,7 @@ impl Location {
         name: String,
         code: String,
         region: String,
+        parent_id: Option<uuid::Uuid>,
         latitude: Option<f64>,
         longitude: Option<f64>,
     ) -> Self {
@@ -99,6 +101,7 @@ impl Location {
             name,
             code,
             region,
+            parent_id,
             latitude,
             longitude,
             is_active: true,

@@ -2,6 +2,8 @@
 // Módulo de entidades de mapeo relacional Sea-ORM
 // Vinculado con ADR-0004-persistencia-mysql-seaorm-docker.md
 
+pub mod active_alert_entity;
+pub mod device_entity;
 pub mod location_entity;
 pub mod role_entity;
 pub mod system_setting_entity;
@@ -9,6 +11,8 @@ pub mod user_entity;
 pub mod user_session_entity;
 pub mod used_refresh_token_entity;
 
+pub use active_alert_entity::Entity as ActiveAlert;
+pub use device_entity::Entity as Device;
 pub use location_entity::Entity as Location;
 pub use role_entity::Entity as Role;
 pub use system_setting_entity::Entity as SystemSetting;

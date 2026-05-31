@@ -1,8 +1,8 @@
-# 🗺️ Roadmap — Módulo 3: Dashboard de Monitoreo de Red
+# 🗺️ Roadmap Actualizado — Módulo 3: Dashboard de Monitoreo de Red
 
-```
+```text
 Propósito: Consolidar y agregar el estado operativo de toda la infraestructura de red en tiempo real para el operador.
-Entregable: Panel principal (Home) en Svelte 5 alimentado por Server-Sent Events (SSE) o sondeo corto desde Axum, mostrando el conteo de nodos caídos/activos, latencia promedio por sede en Beni y el feed de alertas críticas.
+Entregable: Panel principal (Home) en Svelte 5 alimentado por TanStack Query (sondeo corto), clonando la interfaz visual de la captura "Redes Beni": Grid de KPIs específico, Feed de Alertas Recientes y Estado de Dispositivos.
 Regla de Pureza: El handler del Dashboard no calcula métricas; consume una vista optimizada o un servicio de agregación del dominio para no bloquear el hilo asíncrono.
 Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
@@ -10,218 +10,127 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 ### Progreso General
 
-| Slice | Nombre | Progreso |
-| --- | --- | --- |
-| **3.1** | Tablas de Nodos y Estado de Conectividad (Docker) | [ ] |
-| **3.2** | Agregaciones y Alertas en las Reglas de Dominio | [ ] |
-| **3.3** | Consultas de Telemetría con Sea-ORM | [ ] |
-| **3.4** | Endpoint de Agregación de KPIs (`/api/dashboard/stats`) | [ ] |
-| **3.5** | Grid de KPIs y Estado de Sedes (Svelte 5 Runes) | [ ] |
-| **3.6** | Feed de Alertas Críticas en Tiempo Real | [ ] |
-| **3.7** | Pruebas de Carga y Simulación de Caída de Nodos | [ ] |
-| **M3** | **Módulo 3 Total** | **[ ]** |
+| Slice | Nombre | Referencia ADR | Progreso |
+| --- | --- | --- | --- |
+| **3.1** | Tablas de Nodos y Alertas (MySQL Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **3.2** | Modelo de Telemetría Ajustado al Diseño | `ADR-0001` | [x] |
+| **3.3** | Consultas de Agregación Real con Sea-ORM | `ADR-0004` | [x] |
+| **3.4** | Endpoint de Agregación de KPIs (`/api/dashboard/stats`) | `ADR-0003`, `ADR-0006` | [x] |
+| **3.5** | Grid de KPIs Real de la Captura (Svelte 5 + shadcn) | `ADR-0017` | [x] |
+| **3.6** | Feed de Alertas Recientes y Estado de Componentes | `ADR-0011`, `ADR-0017` | [x] |
+| **3.7** | Simulación de Caídas Directamente desde Workbench | `ADR-0010` | [ ] |
+| **M3** | **Módulo 3 Total** |  | **[~]** |
 
 ---
 
-## Slice 3.1: Tablas de Nodos y Conectividad (Docker) 🗄️
+## Slice 3.1: Tablas de Nodos y Conectividad (MySQL Workbench) 🗄️
 
-> **Objetivo:** Crear el esquema base de los dispositivos de red para poder calcular las estadísticas del Dashboard.
+> **Objetivo:** Crear el esquema base en tu entorno de base de datos local para soportar las métricas de ancho de banda y alertas de la captura.
 
 * [ ] **3.1.1 — Crear archivo de migración en `data/migrations/0003_network_devices.sql`:**
-```sql
--- Dispositivos de red a monitorear
-CREATE TABLE devices (
-    id VARCHAR(36) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    ip_address VARCHAR(45) NOT NULL UNIQUE,
-    device_type VARCHAR(20) NOT NULL, -- 'ROUTER', 'SWITCH', 'SERVER'
-    location_id VARCHAR(36) NOT NULL,
-    status VARCHAR(15) NOT NULL DEFAULT 'UNKNOWN', -- 'ONLINE', 'OFFLINE', 'DEGRADED'
-    last_ping_ms INT DEFAULT NULL,
-    last_checked_at TIMESTAMP NULL,
-    FOREIGN KEY (location_id) REFERENCES locations(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Alertas activas en el sistema
-CREATE TABLE active_alerts (
-    id VARCHAR(36) PRIMARY KEY,
-    device_id VARCHAR(36) NOT NULL,
-    severity VARCHAR(15) NOT NULL, -- 'WARNING', 'CRITICAL'
-    message VARCHAR(255) NOT NULL,
-    triggered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (device_id) REFERENCES devices(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-```
+* Diseñar la tabla `devices` agregando la columna `bandwidth_gbps` (para alimentar la cuarta tarjeta de la captura) y el estado de conectividad.
+* Diseñar la tabla `active_alerts` con su relación de llave foránea explícita hacia los dispositivos.
 
 
+* [ ] **3.1.2 — Ejecución Local:**
+* Abrir el archivo `.sql` directamente en **MySQL Workbench**.
+* Ejecutar el script usando el icono del rayo para impactar tu base de datos local.
 
-```
-*   [ ] **3.1.2 — Correr la migración e inyectar datos de prueba para Trinidad y Riberalta:**
-    ```bash
-    docker exec -i redes-db-dev mysql -u redes -predes redes_dev < data/migrations/0003_network_devices.sql
 
-```
+* [ ] **3.1.3 — Inyección de Semillas de Prueba:**
+* Ejecutar sentencias `INSERT` nativas en Workbench para cargar nodos de prueba con datos reales (ruteadores en Trinidad, switches en Riberalta con consumos de ancho de banda específicos como `12 Gbps`).
+
+
 
 ---
 
-## Slice 3.2: Agregaciones y Alertas en el Dominio 🧠
+## Slice 3.2: Modelo de Telemetría Ajustado al Diseño 🧠
 
-> **Objetivo:** Definir las estructuras del Dominio que representarán la salud de la red sin depender de cómo se calculen en la base de datos.
+> **Objetivo:** Adaptar las estructuras del dominio en Rust para que reflejen fielmente el contenido visual del nuevo Dashboard.
 
-* [ ] **3.2.1 — Crear el modelo del Dashboard en `crates/domain/src/models/dashboard.rs`:**
-```rust
-use serde::{Serialize, Deserialize};
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DashboardStats {
-    pub total_devices: usize,
-    pub online_count: usize,
-    pub offline_count: usize,
-    pub degraded_count: usize,
-    pub active_critical_alerts: usize,
-    pub avg_latency_ms: f64,
-}
-
-```
+* [ ] **3.2.1 — Actualizar el modelo del Dashboard en `crates/domain/src/models/dashboard.rs`:**
+* Definir la estructura abstracta que el backend transmitirá. Debe contener los campos exactos de las tarjetas: `active_locations`, `online_devices`, `pending_alerts`, `critical_alerts_count` y `total_bandwidth_gbps`.
 
 
-
-```
 
 ---
 
 ## Slice 3.3: Consultas de Telemetría con Sea-ORM 🔌
-> **Objetivo:** Escribir consultas SQL optimizadas de agregación para traer los KPIs de un solo golpe.
 
-*   [ ] **3.3.1 — Crear los repositorios en `crates/database/src/repositories/dashboard_repository.rs`:**
-    ```rust
-    use sea_orm::*;
-    use domain::models::dashboard::DashboardStats;
-    use crate::entities::user_entity; // Cambiar por tus entidades de red mapeadas
+> **Objetivo:** Traducir el inventario físico en datos agrupados ultrarrápidos utilizando el ORM de Rust.
 
-    pub struct DashboardRepository;
+* [ ] **3.3.1 — Configurar el Repositorio de Datos:**
+* Generar o actualizar las entidades de Sea-ORM para que lean las tablas de dispositivos y alertas.
+* Programar la consulta asíncrona de agregación utilizando sentencias `COUNT` y `SUM` integradas en el ORM para obtener el estado de salud global de la red en una sola llamada a la base de datos.
 
-    impl DashboardRepository {
-        pub async fn get_current_metrics(db: &DatabaseConnection) -> Result<DashboardStats, DbErr> {
-            // Aquí ejecutamos un COUNT y AVG agrupado usando Sea-ORM
-            // Por ahora mapeamos un mock estructurado para el Spike del módulo
-            Ok(DashboardStats {
-                total_devices: 45,
-                online_count: 42,
-                offline_count: 2,
-                degraded_count: 1,
-                active_critical_alerts: 2,
-                avg_latency_ms: 12.4,
-            })
-        }
-    }
 
-```
 
 ---
 
 ## Slice 3.4: Endpoint de Agregación de KPIs en Axum 🛣️
 
-> **Objetivo:** Crear la ruta protegida que consumirá el cliente de Svelte para actualizar el Dashboard.
+> **Objetivo:** Crear la compuerta web segura para que el cliente de Svelte extraiga la información.
 
-* [ ] **3.4.1 — Crear `crates/infrastructure/src/handlers/dashboard_handler.rs`:**
-```rust
-use axum::{extract::State, Json, http::StatusCode};
-use crate::AppState;
-use crate::middleware::rbac::RequireRole;
-use domain::models::dashboard::DashboardStats;
-use database::repositories::dashboard_repository::DashboardRepository;
-
-pub async fn get_metrics(
-    _auth: RequireRole, // Asegura que solo personal autorizado acceda
-    State(state): State<AppState>,
-) -> Result<Json<DashboardStats>, StatusCode> {
-    let stats = DashboardRepository::get_current_metrics(&state.db)
-        .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(stats))
-}
-
-```
+* [ ] **3.4.1 — Implementar el Handler y Rutas:**
+* Crear la ruta asíncrona protected en Axum bajo la dirección `/api/dashboard/stats`.
+* Integrar el extractor de roles (`RequireRole`) para asegurar que solo los operadores autorizados visualicen el panel de control regional del Beni.
 
 
-
-```
 
 ---
 
-## Slice 3.5: Grid de KPIs y Estado de Sedes (Svelte 5 Runes) 🎨
-> **Objetivo:** Crear la interfaz del centro de control con Tailwind v4 usando componentes ultra-rápidos basados en estados derivados.
+## Slice 3.5: Grid de KPIs Real de la Captura (Svelte 5 + shadcn-svelte) 🎨
 
-*   [ ] **3.5.1 — Implementar la vista del Dashboard en `apps/web/src/routes/dashboard/+page.svelte`:**
-    ```html
-    <script lang="ts">
-        // Estado reactivo global de la telemetría usando Runes
-        let stats = $state({
-            total_devices: 0,
-            online_count: 0,
-            offline_count: 0,
-            degraded_count: 0,
-            active_critical_alerts: 0,
-            avg_latency_ms: 0.0
-        });
+> **Objetivo:** Replicar con precisión milimétrica la estructura superior de 4 columnas de tu imagen de referencia utilizando estados reactivos avanzados.
 
-        // Rune derivada para evaluar el nivel de peligro de la red en el Beni
-        let networkHealthHealthClass = $derived(
-            stats.offline_count > 0 ? 'border-red-500 text-red-500' : 'border-emerald-500 text-emerald-500'
-        );
-    </script>
+* [ ] **3.5.1 — Integrar TanStack Query en la vista principal:**
+* Configurar `createQuery` en tu ruta del dashboard para gestionar el sondeo corto (polling automático), sincronizando la UI con el backend de Axum de manera transparente.
 
-    <div class="p-6 space-y-6 bg-zinc-950 text-white min-h-screen">
-        <header class="flex justify-between items-center border-b border-zinc-800 pb-4">
-            <h1 class="text-3xl font-black tracking-tight">MONITOREO DE REDES - BENI</h1>
-            <div class="px-3 py-1 text-xs font-bold rounded-full border {networkHealthHealthClass}">
-                {stats.offline_count > 0 ? '🔴 INFRAESTRUCTURA COMPROMETIDA' : '🟢 SISTEMA ESTABLE'}
-            </div>
-        </header>
 
-        <!-- Grid de KPIs con Tailwind v4 -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                <span class="text-sm text-zinc-400 font-medium">Dispositivos Online</span>
-                <p class="text-4xl font-extrabold text-emerald-400 mt-2">{stats.online_count}</p>
-            </div>
-            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                <span class="text-sm text-zinc-400 font-medium">Nodos Caídos</span>
-                <p class="text-4xl font-extrabold text-red-500 mt-2">{stats.offline_count}</p>
-            </div>
-            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                <span class="text-sm text-zinc-400 font-medium">Alertas Activas</span>
-                <p class="text-4xl font-extrabold text-amber-500 mt-2">{stats.active_critical_alerts}</p>
-            </div>
-            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                <span class="text-sm text-zinc-400 font-medium">Latencia Promedio</span>
-                <p class="text-4xl font-extrabold text-blue-400 mt-2">{stats.avg_latency_ms} ms</p>
-            </div>
-        </div>
-    </div>
+* [ ] **3.5.2 — Diseñar el layout de Tarjetas:**
+* Utilizar componentes primitivos de **shadcn-svelte** para armar el panel oscuro (fondo en tonos Zinc intensos).
+* Maquetar las 4 tarjetas idénticas a tu captura:
+1. **Sedes Activas:** Mostrando el número de municipios monitoreados y la variación de tendencia.
+2. **Dispositivos Online:** Con el porcentaje de disponibilidad de la infraestructura regional.
+3. **Alertas Pendientes:** Resaltando la cantidad de incidencias críticas.
+4. **Ancho de Banda:** Reflejando la carga total de tráfico de datos en **Gbps**.
 
-```
+
+
+
 
 ---
 
-## Slice 3.6: Feed de Alertas Críticas 🚨
+## Slice 3.6: Feed de Alertas Recientes y Componentes de Estado 🚨
 
-> **Objetivo:** Mostrar una lista cronológica con los últimos incidentes reportados en los ruteadores de las sedes.
+> **Objetivo:** Implementar los bloques inferiores de la captura para dar salida al flujo cronológico de incidentes.
 
-```
-[ ] Maquetar el componente visual de Alertas Recientes debajo del Grid de KPIs.
-[ ] Inyectar estilos condicionales: Fondo rojo oscuro para fallos de Ping ('CRITICAL'), fondo amarillo para latencia alta ('WARNING').
+* [ ] **3.6.1 — Validación con Zod:**
+* Crear el esquema estricto en TypeScript con Zod para asegurar la consistencia del feed que se dibuja en la pantalla.
 
-```
+
+* [ ] **3.6.2 — Implementar el bloque "Alertas Recientes":**
+* Diseñar la vista usando estados condicionales de Svelte 5. Si la lista está limpia, renderizar tu icono verde con la leyenda "Sin alertas pendientes". Si hay incidencias, listar los ruteadores afectados aplicando los estilos visuales oscuros correspondientes.
+
+
+* [ ] **3.6.3 — Estructurar "Estado de Dispositivos":**
+* Preparar el contenedor derecho para albergar la lista de componentes de red y remover el mensaje por defecto de "Sin datos disponibles".
+
+
 
 ---
 
-## Slice 3.7: Pruebas de Carga y Simulación 🏁
+## Slice 3.7: Simulación de Caídas Directamente desde Workbench 🏁
 
-```
-[ ] Prueba 1 (Cero fugas): Verificar con Bacon que el cambio constante de estados en las Runes no congele la pestaña del navegador.
-[ ] Prueba 2 (Simulación): Forzar un cambio de estado en la tabla `devices` a 'OFFLINE' usando MySQL y comprobar que el Dashboard refresque e incremente el contador rojo.
+> **Objetivo:** Certificar bajo estrés controlado que todo el circuito reacciona de forma automática sin intervención manual.
 
-```
+* [ ] **3.7.1 — Verificar Rendimiento:**
+* Validar con Bacon en tu terminal local que las peticiones asíncronas recurrentes de TanStack Query no saturen las Runes ni congelen los hilos del navegador.
+
+
+* [ ] **3.7.2 — Ejecutar Simulación de Incidente:**
+* Ejecutar una consulta de actualización directa desde la grilla de comandos de **MySQL Workbench** (ej. tumbar un nodo cambiando su estado a 'OFFLINE').
+
+
+* [ ] **3.7.3 — Validación de Extremo a Extremo:**
+* Confirmar que, sin reiniciar el servidor de Rust ni recargar la pestaña del navegador, el contador de "Dispositivos Online" de tu interfaz disminuya, se incremente el indicador de "Alertas Pendientes" y aparezca la nueva fila de error en el feed inferior automáticamente.

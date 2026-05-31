@@ -1,5 +1,5 @@
 // crates/database/src/entities/location_entity.rs
-// Entidad de mapeo relacional para tabla locations
+// Entidad de mapeo relacional para tabla locations con jerarquía
 // Vinculado con ADR-0004-persistencia-mysql-seaorm-docker.md
 
 use sea_orm::entity::prelude::*;
@@ -14,6 +14,7 @@ pub struct Model {
     #[sea_orm(unique)]
     pub code: String,
     pub region: String,
+    pub parent_id: Option<String>,
     pub latitude: Option<Decimal>,
     pub longitude: Option<Decimal>,
     pub is_active: bool,

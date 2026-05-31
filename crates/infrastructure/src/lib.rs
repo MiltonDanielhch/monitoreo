@@ -12,7 +12,7 @@ pub mod middleware;
 pub mod workers;
 
 use axum::{routing::{get, post, put}, Json, Router, extract::State};
-use database::{DatabaseConnection, AuthRepository, SettingsRepository};
+use database::{DatabaseConnection, AuthRepository, SettingsRepository, DashboardRepository};
 use crate::config::RuntimeConfig;
 use tower_http::cors::{CorsLayer, Any};
 use tower_http::trace::TraceLayer;
@@ -25,6 +25,7 @@ pub struct AppState {
     pub db: DatabaseConnection,
     pub auth_repo: Arc<AuthRepository>,
     pub settings_repo: Arc<SettingsRepository>,
+    pub dashboard_repo: Arc<DashboardRepository>,
     pub runtime_config: RuntimeConfig,
     pub paseto_secret: SecretString,
 }
@@ -49,6 +50,10 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/auth/logout", post(handlers::auth_handler::logout))
         .route("/api/settings/thresholds", get(handlers::settings_handler::get_thresholds))
         .route("/api/settings/thresholds", put(handlers::settings_handler::update_thresholds))
+        .route("/api/dashboard/stats", get(handlers::dashboard_handler::get_dashboard_stats))
+        .route("/api/dashboard/alerts", get(handlers::dashboard_handler::get_recent_alerts))
+        .route("/api/locations", get(handlers::locations_handler::get_locations))
+        .route("/api/devices", get(handlers::get_devices))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

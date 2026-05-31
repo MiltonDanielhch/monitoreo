@@ -30,6 +30,7 @@ impl SettingsRepository {
                     loc.name,
                     loc.code,
                     loc.region,
+                    loc.parent_id.as_ref().and_then(|id| Uuid::parse_str(id).ok()),
                     loc.latitude.map(|d| d.to_string().parse::<f64>().ok()).flatten(),
                     loc.longitude.map(|d| d.to_string().parse::<f64>().ok()).flatten(),
                 ))
