@@ -26,10 +26,11 @@
 | ✅ **M4: Notificaciones Engine** | `ROADMAP_MODULO_4_NOTIFICACIONES.md` | **COMPLETADO** | 100% |
 | 🔄 **M5: Topología de Red** | `ROADMAP_MODULO_5_ARCHIVO_INFRA_TOPOLOGIA.md` | **EN PROGRESO** | ~87% |
 | ✅ **M6: Auditoría Inmutable** | `ROADMAP_MODULO_6_AUDITORIA_DINAMICA_INMUTABLE.md` | **COMPLETADO** | 100% |
-| ✅ **M7: API & Telemetría** | `ROADMAP_MODULO_7_API_TELEMATRIA.md` | **COMPLETADO** | 100% |
+| ✅ **M7: API de Telemetría** | `ROADMAP_MODULO_7_API_TELEMATRIA.md` | **COMPLETADO** | 100% |
 | ⏳ **M8: Workers Asíncronos** | `ROADMAP_MODULO_8_TAREA SEGUNDO_PLANO_AUTOMATIZACION.md` | Pendiente | 0% |
 | ⏳ **M9: Reportes Analíticos** | `ROADMAP_MODULO_9_REPORTES.md` | Pendiente | 0% |
 | ⏳ **M10: Despliegue & Sync** | `ROADMAP_MODULO_10_DESPLIEGUE.md` | Pendiente | 0% |
+| ⏳ **M11: Detección de Intrusiones** | `ROADMAP_MODULO_11_INTRUSIONES_SEGURIDAD.md` | Pendiente | 0% |
 
 ## Contexto Operativo (ADR 0020)
 
