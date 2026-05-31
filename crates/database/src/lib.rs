@@ -13,6 +13,7 @@ pub mod repositories;
 
 pub use repositories::AuthRepository;
 pub use repositories::DashboardRepository;
+pub use repositories::NetworkFileRepository;
 pub use repositories::NotificationRepository;
 pub use repositories::SettingsRepository;
 

@@ -14,6 +14,7 @@
 		{ href: '/dashboard/metricas', label: 'Métricas', icon: BarChart3, description: 'Indicadores de rendimiento' },
 		{ href: '/dashboard/alertas', label: 'Alertas', icon: AlertTriangle, badge: 0, description: 'Incidentes críticos' },
 		{ href: '/dashboard/notifications', label: 'Notificaciones', icon: Mail, description: 'Historial de alertas enviadas' },
+		{ href: '/dashboard/infrastructure', label: 'Infraestructura', icon: Settings, description: 'Archivos técnicos y topologías' },
 	];
 
 	const bottomItems = [

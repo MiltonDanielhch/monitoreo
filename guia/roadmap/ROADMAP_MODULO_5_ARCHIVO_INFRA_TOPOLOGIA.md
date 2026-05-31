@@ -14,15 +14,15 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **5.1** | Esquema Relacional de Activos (MySQL Workbench) | `ADR-0004`, `ADR-0005` | [ ] |
-| **5.2** | Modelos de Infraestructura y Filtros de Dominio | `ADR-0001`, `ADR-0008` | [ ] |
-| **5.3** | Entidades de Activos y Auditoría (Sea-ORM) | `ADR-0004` | [ ] |
-| **5.4** | Adaptador de Almacenamiento Regional Local | `ADR-0012` | [ ] |
-| **5.5** | Endpoints de Carga Streaming y Descarga en Axum | `ADR-0003`, `ADR-0013` | [ ] |
-| **5.6** | UI Drag-and-Drop (Svelte 5 + TanStack Query) | `ADR-0017` [UPLOAD] | [ ] |
-| **5.7** | Visor de Topología SVG y Galería de Racks | `ADR-0017` [VIEWER] | [ ] |
-| **5.8** | Pruebas de Integridad y Sanitización de SVG | `ADR-0010` | [ ] |
-| **M5** | **Módulo 5 Total** |  | **[ ]** |
+| **5.1** | Esquema Relacional de Activos (MySQL Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **5.2** | Modelos de Infraestructura y Filtros de Dominio | `ADR-0001`, `ADR-0008` | [x] |
+| **5.3** | Entidades de Activos y Auditoría (Sea-ORM) | `ADR-0004` | [x] |
+| **5.4** | Adaptador de Almacenamiento Regional Local | `ADR-0012` | [x] |
+| **5.5** | Endpoints de Carga Streaming y Descarga en Axum | `ADR-0003`, `ADR-0013` | [x] |
+| **5.6** | UI Drag-and-Drop (Svelte 5 + TanStack Query) | `ADR-0017` [UPLOAD] | [x] |
+| **5.7** | Visor de Topología SVG y Galería de Racks | `ADR-0017` [VIEWER] | [x] |
+| **5.8** | Pruebas de Integridad y Sanitización de SVG | `ADR-0010` | [!] |
+| **M5** | **Módulo 5 Total** |  | **[~]** |
 
 ---
 

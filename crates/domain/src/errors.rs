@@ -50,6 +50,19 @@ pub enum DomainError {
 
     #[error("Error al renderizar plantilla: {0}")]
     TemplateRenderError(String),
+
+    // Errores del dominio de infraestructura - Módulo 5
+    #[error("Formato de archivo no soportado para infraestructura de red")]
+    UnsupportedNetworkFormat,
+
+    #[error("Archivo de respaldo corrupto o inválido")]
+    CorruptedBackup,
+
+    #[error("Sede no encontrada: {0}")]
+    SedeNotFound(String),
+
+    #[error("Error de almacenamiento de archivos: {0}")]
+    FileStorageError(String),
 }
 
 pub type Result<T> = std::result::Result<T, DomainError>;

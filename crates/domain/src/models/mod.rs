@@ -6,6 +6,7 @@ pub mod user;
 pub mod session;
 pub mod settings;
 pub mod notification;
+pub mod infrastructure_file;
 
 pub use user::User;
 pub use session::Session;
@@ -15,3 +16,4 @@ pub use notification::{
     NodeDownContext, HighLatencyContext, BandwidthSaturationContext, DeviceUnauthorizedContext,
     NotificationTemplate, NotificationRequest, NotificationResult
 };
+pub use infrastructure_file::{NetworkFileType, FileValidator, InfrastructureFile, NetworkStoragePort};
