@@ -3,6 +3,7 @@
 // Vinculado con ADR-0004-persistencia-mysql-seaorm-docker.md
 
 pub mod active_alert_entity;
+pub mod audit_entity;
 pub mod device_entity;
 pub mod location_entity;
 pub mod network_file_entity;
@@ -16,6 +17,7 @@ pub mod user_session_entity;
 pub mod used_refresh_token_entity;
 
 pub use active_alert_entity::Entity as ActiveAlert;
+pub use audit_entity::Entity as AuditTrail;
 pub use device_entity::Entity as Device;
 pub use location_entity::Entity as Location;
 pub use network_file_entity::Entity as NetworkFile;

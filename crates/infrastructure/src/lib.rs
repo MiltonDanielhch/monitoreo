@@ -61,6 +61,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/v1/infrastructure/upload", post(handlers::infrastructure_file_handler::upload_file))
         .route("/api/v1/infrastructure/download/{id}", get(handlers::infrastructure_file_handler::download_file))
         .route("/api/v1/infrastructure/files", get(handlers::infrastructure_file_handler::list_files))
+        .route("/api/v1/audit/logs", get(handlers::audit_handler::get_audit_logs))
+        .route("/api/v1/audit/entity-history", get(handlers::audit_handler::get_entity_history))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

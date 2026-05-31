@@ -15,6 +15,7 @@
 		{ href: '/dashboard/alertas', label: 'Alertas', icon: AlertTriangle, badge: 0, description: 'Incidentes críticos' },
 		{ href: '/dashboard/notifications', label: 'Notificaciones', icon: Mail, description: 'Historial de alertas enviadas' },
 		{ href: '/dashboard/infrastructure', label: 'Infraestructura', icon: Settings, description: 'Archivos técnicos y topologías' },
+		{ href: '/dashboard/audit', label: 'Auditoría', icon: ShieldAlert, description: 'Historial inmutable de acciones' },
 	];
 
 	const bottomItems = [

@@ -14,15 +14,15 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **6.1** | Esquema Estricto Append-Only (MySQL Workbench) | `ADR-0004`, `ADR-0009` | [ ] |
-| **6.2** | Modelos de Seguridad y Puertos del Dominio | `ADR-0001` | [ ] |
-| **6.3** | Entidad Inmutable y Persistencia (Sea-ORM) | `ADR-0004` | [ ] |
-| **6.4** | Interceptores y Extractores de Red en Axum 0.8 | `ADR-0003`, `ADR-0012` | [ ] |
-| **6.5** | API de Consulta y Filtros Avanzados de Auditoría | `ADR-0003`, `ADR-0006` | [ ] |
-| **6.6** | UI de Línea de Tiempo Quirúrgica (Svelte 5 + UI) | `ADR-0017` [TIMELINE] | [ ] |
+| **6.1** | Esquema Estricto Append-Only (MySQL Workbench) | `ADR-0004`, `ADR-0009` | [x] |
+| **6.2** | Modelos de Seguridad y Puertos del Dominio | `ADR-0001` | [x] |
+| **6.3** | Entidad Inmutable y Persistencia (Sea-ORM) | `ADR-0004` | [x] |
+| **6.4** | Interceptores y Extractores de Red en Axum 0.8 | `ADR-0003`, `ADR-0012` | [x] |
+| **6.5** | API de Consulta y Filtros Avanzados de Auditoría | `ADR-0003`, `ADR-0006` | [x] |
+| **6.6** | UI de Línea de Tiempo Quirúrgica (Svelte 5 + UI) | `ADR-0017` [TIMELINE] | [x] |
 | **6.7** | Alertas Visuales para Eventos Regionales Críticos | `ADR-0011`, `ADR-0017` | [ ] |
 | **6.8** | Pruebas de Estrés e Intentos de Alteración de Logs | `ADR-0010` | [ ] |
-| **M6** | **Módulo 6 Total** |  | **[ ]** |
+| **M6** | **Módulo 6 Total** |  | **[~]** |
 
 ---
 

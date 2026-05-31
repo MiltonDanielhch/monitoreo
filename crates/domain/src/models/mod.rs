@@ -7,6 +7,7 @@ pub mod session;
 pub mod settings;
 pub mod notification;
 pub mod infrastructure_file;
+pub mod audit;
 
 pub use user::User;
 pub use session::Session;
@@ -17,3 +18,4 @@ pub use notification::{
     NotificationTemplate, NotificationRequest, NotificationResult
 };
 pub use infrastructure_file::{NetworkFileType, FileValidator, InfrastructureFile, NetworkStoragePort};
+pub use audit::{AuditLog, AuditAction, AuditFilters, AuditPort};

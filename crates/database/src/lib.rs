@@ -12,6 +12,7 @@ pub mod entities;
 pub mod repositories;
 
 pub use repositories::AuthRepository;
+pub use repositories::AuditRepository;
 pub use repositories::DashboardRepository;
 pub use repositories::NetworkFileRepository;
 pub use repositories::NotificationRepository;
