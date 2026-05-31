@@ -34,6 +34,22 @@ pub enum DomainError {
 
     #[error("Error de infraestructura: {0}")]
     Infrastructure(String),
+
+    // Errores del dominio de notificaciones - Módulo 4
+    #[error("Plantilla de notificación no encontrada")]
+    TemplateNotFound,
+
+    #[error("Destinatario inválido: {0}")]
+    InvalidRecipient(String),
+
+    #[error("Excedido el límite de reintentos para notificación")]
+    MaxRetriesExceeded,
+
+    #[error("Canal de notificación no disponible")]
+    ChannelUnavailable,
+
+    #[error("Error al renderizar plantilla: {0}")]
+    TemplateRenderError(String),
 }
 
 pub type Result<T> = std::result::Result<T, DomainError>;

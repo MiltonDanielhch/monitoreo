@@ -9,4 +9,8 @@ pub mod errors;
 pub mod models;
 
 pub use errors::{DomainError, Result};
-pub use models::{User, Session, SystemSettings, ThresholdSettings, ThresholdValue, Location, SystemSetting, SettingValueType};
+pub use models::{User, Session, SystemSettings, ThresholdSettings, ThresholdValue, Location, SystemSetting, SettingValueType,
+    ChannelType, NotificationEventType, NotificationStatus, NotificationPayload,
+    NodeDownContext, HighLatencyContext, BandwidthSaturationContext, DeviceUnauthorizedContext,
+    NotificationTemplate, NotificationRequest, NotificationResult
+};

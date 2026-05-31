@@ -9,6 +9,7 @@ pub mod config;
 pub mod crypto;
 pub mod handlers;
 pub mod middleware;
+pub mod notifications;
 pub mod workers;
 
 use axum::{routing::{get, post, put}, Json, Router, extract::State};
@@ -54,6 +55,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/dashboard/alerts", get(handlers::dashboard_handler::get_recent_alerts))
         .route("/api/locations", get(handlers::locations_handler::get_locations))
         .route("/api/devices", get(handlers::get_devices))
+        .route("/api/v1/notifications/logs", post(handlers::notification_handler::get_notification_logs))
+        .route("/api/v1/notifications/test-smtp", post(handlers::notification_handler::test_smtp_connection))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

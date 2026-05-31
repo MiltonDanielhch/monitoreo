@@ -28,3 +28,4 @@ hex = "0.4"
 chrono = { workspace = true }
 uuid = { workspace = true }
 async-trait = "0.1"
+lettre = "0.11"

@@ -32,9 +32,9 @@ Aquí tienes el **Roadmap Completo e Integrado** para el **Módulo 1**. He conso
 | **1.4** | Infraestructura de Persistencia Sea-ORM (`crates/database`) | `ADR-0001`, `ADR-0004` | [x] |
 | **1.5** | Suite Criptográfica: Argon2id, PASETO v4 y SHA-256 (`crates/infrastructure`) | `ADR-0008` | [x] |
 | **1.6** | Controladores HTTP, Rotación (RTR) y Extractores de Axum | `ADR-0003`, `ADR-0006`, `ADR-0009` | [x] |
-| **1.7** | Interfaz de Acceso y Gestión de Estado Reactivo (Svelte 5 Runes) | `ADR-0017` | [ ] |
-| **1.8** | Filtros de Navegación del Cliente SvelteKit (`+layout.ts`) | `ADR-0017` | [ ] |
-| **1.9** | Pruebas de Ataque por Reutilización y Resistencia E2E | `ADR-0010` | [ ] |
+| **1.7** | Interfaz de Acceso y Gestión de Estado Reactivo (Svelte 5 Runes) | `ADR-0017` | [x] |
+| **1.8** | Filtros de Navegación del Cliente SvelteKit (`+layout.ts`) | `ADR-0017` | [x] |
+| **1.9** | Pruebas de Ataque por Reutilización y Resistencia E2E | `ADR-0010` | [x] |
 | **M1-B** | Tarea en Segundo Plano: Purga Asíncrona de Sesiones Muertas | `ADR-0015` | [x] |
 
 ---

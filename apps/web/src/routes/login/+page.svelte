@@ -3,7 +3,7 @@
 <!-- Vinculado con ADR-0017-frontend-sveltekit-svelte5.md -->
 
 <script lang="ts">
-    import { auth } from '$lib/auth.svelte.ts';
+    import { auth } from '$lib/auth.svelte';
     import { goto } from '$app/navigation';
 
     let email = $state('');

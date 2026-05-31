@@ -3,7 +3,7 @@
 <!-- Vinculado con ADR-0017 (Frontend SvelteKit/Svelte 5) -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { Building2, Monitor, BarChart3, AlertTriangle, ShieldAlert, Settings, ChevronLeft, ChevronRight, Home } from 'lucide-svelte';
+	import { Building2, Monitor, BarChart3, AlertTriangle, ShieldAlert, Settings, ChevronLeft, ChevronRight, Home, Mail } from 'lucide-svelte';
 
 	let collapsed = $state(false);
 
@@ -13,9 +13,11 @@
 		{ href: '/dashboard/dispositivos', label: 'Dispositivos', icon: Monitor, description: 'Monitoreo de dispositivos' },
 		{ href: '/dashboard/metricas', label: 'Métricas', icon: BarChart3, description: 'Indicadores de rendimiento' },
 		{ href: '/dashboard/alertas', label: 'Alertas', icon: AlertTriangle, badge: 0, description: 'Incidentes críticos' },
+		{ href: '/dashboard/notifications', label: 'Notificaciones', icon: Mail, description: 'Historial de alertas enviadas' },
 	];
 
 	const bottomItems = [
+		{ href: '/dashboard/notifications/config', label: 'Config. SMTP', icon: Settings, description: 'Configuración de correo' },
 		{ href: '/dashboard/settings', label: 'Configuración', icon: Settings, description: 'Ajustes del sistema' },
 	];
 

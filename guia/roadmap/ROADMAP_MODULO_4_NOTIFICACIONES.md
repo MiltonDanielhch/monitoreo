@@ -1,179 +1,164 @@
-# 🗺️ Roadmap — Módulo 4: Notificaciones y Alertas en Segundo Plano
+# 🗺️ Roadmap Actualizado — Módulo 4: Notificaciones en Segundo Plano
 
-> **Propósito:** Construir el motor de procesamiento y despacho asíncrono de alertas críticas del sistema de monitoreo, garantizando que el envío de correos o mensajería no bloquee el hilo de ejecución web y aislando el dominio de los protocolos de red (SMTP/HTTP).
-> **Entregable:** Panel de historial de alertas reactivo en Svelte 5, procesamiento asíncrono con Apalis (u otra cola respaldada por la base de datos) y despacho de notificaciones mediante plantillas dinámicas parametrizables.
-> **Regla de Pureza:** El dominio no conoce qué es un cliente SMTP, qué es `lettre`, qué es la API de Telegram o cómo se serializa un JSON. El dominio solo entiende eventos de red que requieren difusión, plantillas de texto y contratos de despacho.
-> **Stack:** Rust 2024 · Axum 0.8 · Apalis (o SQL-Queue alternative) · Sea-ORM 1.1 · Lettre (SMTP) · SvelteKit 2 · Svelte 5 (Runes) · Tailwind v4 · Docker
-> **Última Revisión:** Mayo 2026
+### 🖼️ Integrado al Ecosistema del Lab 3030 y la Interfaz "Redes Beni"
+
+```text
+Propósito: Construir el motor de procesamiento y despacho asíncrono de alertas críticas, garantizando que el envío de correos o mensajería no bloquee el hilo web y aislando el dominio de los protocolos de red (SMTP/HTTP).
+Entregable: Historial de alertas reactivo en Svelte 5, procesamiento asíncrono en background mediante una cola nativa sobre MySQL y despacho de notificaciones con plantillas dinámicas.
+Regla de Pureza: El dominio no conoce protocolos como SMTP ni APIs externas; solo entiende eventos de red que requieren difusión, plantillas de texto y contratos de despacho.
+Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
+
+```
+
+### 📊 Matriz de Progreso General
+
+| Slice | Nombre | Referencia ADR | Progreso |
+| --- | --- | --- | --- |
+| **4.1** | Esquema y Migración SQL (MySQL Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **4.2** | Eventos de Notificación y Errores de Dominio | `ADR-0001`, `ADR-0007` | [x] |
+| **4.3** | Entidades y Repositorios de Persistencia (Sea-ORM) | `ADR-0004` | [x] |
+| **4.4** | Adaptadores de Red (SMTP) y Cola en Background | `ADR-0014`, `ADR-0015` | [x] |
+| **4.5** | Endpoints de Historial y Pruebas en Axum | `ADR-0003`, `ADR-0006` | [x] |
+| **4.6** | UI del Historial de Alertas (Svelte 5 + UI) | `ADR-0017` [TANSTACK/SHADCN] | [x] |
+| **4.7** | Formulario de Configuración y Test (Zod + UI) | `ADR-0011`, `ADR-0017` [ZOD] | [x] |
+| **4.8** | Pruebas de Carga de la Cola y Simulación Offline | `ADR-0010` | [ ] |
+| **M4** | **Módulo 4 Total** |  | **[x]** |
 
 ---
 
-## Estados
+## Slice 4.1: Esquema y Migración SQL de Alertas (MySQL Workbench) 🗄️
 
-```
-[ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
+> **Objetivo:** Diseñar el modelo de datos relacional en tu base de datos local para guardar canales de envío, plantillas de mensajes e historial de reintentos.
 
-```
+* [ ] **4.1.1 — Diseño del Archivo SQL:**
+* Crear el archivo plano en `data/migrations/0004_notification_engine.sql`.
+* Diseñar la estructura de tres tablas clave: `notification_channels` (canales activos de email/Telegram), `notification_templates` (plantillas preconfiguradas con texto dinámico) y `notification_logs` (historial detallado de envíos, intentos y mensajes de error).
 
----
 
-## Progreso General
+* [ ] **4.1.2 — Ejecución Directa en Workbench:**
+* Abrir el archivo `.sql` en tu **MySQL Workbench**.
+* Ejecutar el script completo usando el botón del rayo para crear físicamente las tablas e índices en tu servidor local.
 
-| Slice | Nombre | Progreso |
-| --- | --- | --- |
-| 4.1 | Esquema y Migración SQL de Alertas | [ ] |
-| 4.2 | Eventos de Notificación y Errores del Dominio (`crates/domain`) | [ ] |
-| 4.3 | Entidades y Repositorios de Persistencia (`crates/database`) | [ ] |
-| 4.4 | Adaptadores de Salida (SMTP/Lettre) y Lógica de Colas (`crates/infrastructure`) | [ ] |
-| 4.5 | Endpoints de Historial y Desencadenadores en Axum | [ ] |
-| 4.6 | UI de Historial de Alertas y Estado Reactivo (Svelte 5 Runes) | [ ] |
-| 4.7 | Formulario de Configuración de Canales y Test-Email | [ ] |
-| 4.8 | Pruebas de Carga de la Cola, Reintentos y Fallo de Red | [ ] |
-| **Módulo 4 Total** |  | [ ] |
 
----
+* [ ] **4.1.3 — Inyección de Semillas (Seeds):**
+* Correr sentencias `INSERT` directamente desde Workbench para registrar las plantillas por defecto del sistema (ej. alertar caídas de nodos o latencias críticas usando parámetros adaptables como `{{host}}` o `{{latency}}`).
 
-## Slice 4.1: Esquema y Migración SQL de Alertas 🔥
 
-> **Objetivo:** Diseñar el modelo de datos relacional para persistir los canales, las plantillas preconfiguradas y el histórico de ejecuciones/reintentos de notificaciones.
+* [ ] **4.1.4 — Inspección de Tablas:**
+* Verificar en el panel de Workbench la integridad y las llaves foráneas indexadas de las nuevas tablas creadas.
 
-```
-[ ] Crear archivo de migración plano en `data/migrations/0004_notification_engine.sql`
-    [ ] Definir tabla `notification_channels` (id, name, type [EMAIL/TELEGRAM], credentials_secure_json, is_active, created_at)
-    [ ] Definir tabla `notification_templates` (slug [PRIMARY KEY], title_template, body_template, description, updated_at)
-    [ ] Definir tabla `notification_logs` (id, channel_id, recipient, template_slug, context_json, status [PENDING/SENT/FAILED], attempts, error_message, created_at, processed_at)
-    [ ] Configurar llaves foráneas indexadas hacia `notification_channels` y `notification_templates` aplicando ON DELETE RESTRICT
 
-[ ] Ejecutar la migración dentro del contenedor de la base de datos:
-    [ ] Comando: docker exec -i redes-db-dev mysql -u redes -predes redes_dev < data/migrations/0004_notification_engine.sql
-
-[ ] Insertar Semillas (Seeds) iniciales para las alertas institucionales:
-    [ ] INSERT INTO notification_templates para los slugs: 'critical_node_down', 'unauthorized_mac_detected', 'high_latency_warning' con variables en formato dual `{{host}}` o `{{latency}}`.
-
-[ ] Verificar integridad física:
-    [ ] Comando: docker exec -it redes-db-dev mysql -u redes -predes redes_dev -e "DESCRIBE notification_logs;"
-
-```
 
 ---
 
-## Slice 4.2: Eventos de Notificación y Errores del Dominio (`crates/domain`) 🔥
+## Slice 4.2: Eventos de Notificación y Errores del Dominio 🧠
 
-> **Objetivo:** Modelar de forma pura las necesidades del negocio de alertas, aislando el dominio de los mecanismos de transporte.
+> **Objetivo:** Modelar de forma pura las necesidades de negocio del sistema de alertas en Rust, aislando la lógica de los mecanismos físicos de transporte.
 
-```
-[ ] Actualizar `crates/domain/src/errors.rs`
-    [ ] Añadir variantes a `DomainError`: `TemplateNotFound`, `InvalidRecipient`, `NotificationDispatchFailed(String)`, `MaxRetriesExceeded`
+* [ ] **4.2.1 — Extensión del Sistema de Errores:**
+* Registrar en tu catálogo central de fallos del dominio (`DomainError`) variantes específicas como plantillas no encontradas, destinatarios inválidos o exceso en el límite de reintentos.
 
-[ ] Crear `crates/domain/src/models/notification.rs`
-    [ ] Definir enum puro `NotificationPayload` con variantes estructuradas (ej. `NodeDown { host: String, ip: String, latency: u32 }`)
-    [ ] Definir struct de dominio `NotificationDispatcher` y contratos de validación de destinatarios (expresiones regulares puras para emails corporativos o IDs de chat)
-    [ ] Definir el trait/puerto `NotificationQueuePort` que declare la operación `enqueue_notification(log_id: &str) -> Result<(), DomainError>`
 
-[ ] Validar compilación aislada:
-    [ ] Ejecutar: cargo check -p domain
+* [ ] **4.2.2 — Modelado del Negocio de Alertas:**
+* Definir en la capa de dominio puro las variantes de carga útiles (como los datos de un nodo caído o una alerta por saturación de tráfico).
+* Declarar los contratos y puertos de interfaz abstractos que definirán cómo se encolará una notificación sin especificar bases de datos.
 
-```
+
 
 ---
 
-## Slice 4.3: Entidades y Repositorios de Persistencia (`crates/database`) 🔥
+## Slice 4.3: Entidades y Repositorios de Persistencia (Sea-ORM) 🔌
 
-> **Objetivo:** Implementar los accesos de datos para leer el contexto de la alerta, procesar plantillas y persistir transiciones de estado de la cola.
+> **Objetivo:** Implementar los métodos de acceso a datos para registrar el disparo inicial de alertas y transicionar sus estados.
 
-```
-[ ] Mapear entidades con Sea-ORM en `crates/database/src/entities/`
-    [ ] Generar/crear `notification_channel_entity.rs`, `notification_template_entity.rs` y `notification_log_entity.rs`
-    [ ] Definir relaciones estructurales directas (un log pertenece a un canal y a una plantilla)
+* [ ] **4.3.1 — Generación de Entidades:**
+* Configurar en el crate de datos las nuevas entidades mapeadas de Sea-ORM correspondientes a los canales, plantillas e historial de logs.
 
-[ ] Crear `crates/database/src/repositories/notification_repository.rs`
-    [ ] Implementar método `NotificationRepository::create_log(...)` para registrar el disparo inicial en estado `PENDING`
-    [ ] Implementar método `NotificationRepository::update_status(id, status, error_msg)` para transicionar estados en la BD
-    [ ] Implementar consulta paginada de logs optimizada con orden descendente por `created_at` para la UI
 
-```
+* [ ] **4.3.2 — Repositorio de Notificaciones:**
+* Desarrollar las funciones del repositorio para guardar registros iniciales en estado de espera (`PENDING`), transicionar sus estados a completado o fallido, y realizar consultas paginadas ordenadas cronológicamente para la interfaz visual.
+
+
 
 ---
 
-## Slice 4.4: Adaptadores de Salida (SMTP/Lettre) y Lógica de Colas (`crates/infrastructure`) 🔥
+## Slice 4.4: Adaptadores de Red y Lógica de Colas en Segundo Plano ⚙️
 
-> **Objetivo:** Programar el software de infraestructura que interactúa con la red física y el motor de tareas asíncronas en background (Apalis).
+> **Objetivo:** Configurar el motor que interactúa con la red física (servidor de correo) y el procesador asíncrono para ejecutar tareas en segundo plano usando Tokio.
 
-```
-[ ] Configurar dependencias en `crates/infrastructure/Cargo.toml`
-    [ ] Agregar: `lettre` (con features de TLS nativo), `apalis` (o tu abstracción de workers sobre DB) y `handlebars` (para compilación ligera de texto)
+* [ ] **4.4.1 — Integración de Herramientas de Correo:**
+* Habilitar en la infraestructura los conectores de mensajería locales y un motor ligero para el renderizado del texto dinámico de las plantillas de base de datos.
 
-[ ] Crear el servicio de renderizado y transporte en `crates/infrastructure/src/services/mailer.rs`
-    [ ] Implementar la integración de `lettre::SmtpTransport` alimentada por las credenciales descifradas del canal
-    [ ] Utilizar `Handlebars` interno para inyectar el `context_json` del log dentro del texto crudo de la plantilla física de la BD
 
-[ ] Configurar el Worker de Background en `crates/infrastructure/src/jobs/notification_job.rs`
-    [ ] Definir la estructura de la tarea asíncrona (`NotificationTask { log_id: String }`)
-    [ ] Programar la función ejecutora del worker: consume de la cola, extrae el log, compila la plantilla, dispara mediante `Lettre` y actualiza el estado de la BD a `SENT`
-    [ ] Implementar política de captura de pánicos y reintentos: si el servidor SMTP de la Gobernación rebota temporalmente, incrementar `attempts` y posponer la ejecución
+* [ ] **4.4.2 — Programación de la Tarea en Background:**
+* Desarrollar el Worker asíncrono que despierta en segundo plano: extrae la tarea de la base de datos, compila la plantilla con los datos del incidente, despacha el correo y actualiza el estado en Workbench de forma transparente sin frenar el flujo web principal.
 
-```
+
 
 ---
 
-## Slice 4.5: Endpoints de Historial y Desencadenadores en Axum 🔥
+## Slice 4.5: Endpoints de Historial y Pruebas en Axum 🛣️
 
-> **Objetivo:** Exponer la telemetría del estado de los envíos a la API y proveer un mecanismo manual de prueba para los administradores.
+> **Objetivo:** Exponer los canales de datos para que la interfaz web consulte la bitácora y proveer herramientas de prueba para el administrador.
 
-```
-[ ] Crear `crates/infrastructure/src/handlers/notification_handler.rs`
-    [ ] Definir DTOs de salida: `NotificationLogResponse` y esquemas de paginación estructurados
-    [ ] Implementar el endpoint `GET /api/v1/notifications/logs` (Protegido con el extractor RBAC del Módulo 1 en rol `ADMIN` u `OPERATOR`)
-    [ ] Implementar el endpoint `POST /api/v1/notifications/test-smtp` que fuerce de forma síncrona el envío de una alerta fantasma a un correo de pruebas para validar la conexión del servidor local de Trinidad
+* [ ] **4.5.1 — Construcción de Handlers:**
+* Crear la ruta `GET /api/v1/notifications/logs` protegida por el sistema de roles de seguridad (RBAC) para entregar la lista pagipada de envíos.
+* Crear la ruta `POST /api/v1/notifications/test-smtp` que fuerce de manera síncrona el envío de una alerta fantasma para certificar instantáneamente las conexiones del servidor local.
 
-[ ] Montar las rutas en el enrutador general `crates/infrastructure/src/router.rs` bajo el prefijo correspondiente
 
-```
 
 ---
 
-## Slice 4.6: UI de Historial de Alertas y Estado Reactivo (Svelte 5 Runes) 🔥
+## Slice 4.6: UI del Historial de Alertas (Svelte 5 + TanStack Query + shadcn) 🎨
 
-> **Objetivo:** Crear el centro de monitoreo visual de notificaciones, mostrando fallos de envío de forma proactiva.
+> **Objetivo:** Crear la pantalla de visualización del historial en la ruta `/dashboard/notifications`, respetando el estilo oscuro de tu captura de pantalla de "Redes Beni".
 
-```
-[ ] Crear/Modificar la ruta de interfaz en `apps/web/src/routes/dashboard/notifications/+page.svelte`
-    [ ] Diseñar la tabla principal del historial usando Tailwind v4 (columnas: Destinatario, Tipo Alerta, Canal, Intentos, Estado, Fecha)
-    [ ] Implementar la rune `$state` para manejar la lista de logs del servidor y el estado de paginación
-    [ ] Utilizar una lógica reactiva para aplicar estilos de Tailwind basados en el estado (`status`): badge verde suave para `sent`, amarillo animado para `pending`, y rojo con tooltip de error para `failed`
-    [ ] Agregar un botón de refresco manual que limpie el estado y vuelva a llamar al API usando `fetch` con cabeceras Bearer
+* [ ] **4.6.1 — Gestión del Estado del Servidor con TanStack Query:**
+* Implementar `createQuery` para devorar los logs de notificaciones desde Axum, administrando la paginación de la tabla de forma asíncrona y fluida.
 
-```
 
----
+* [ ] **4.6.2 — Diseño de la Tabla con shadcn-svelte:**
+* Maquetar el historial usando los componentes limpios de tabla de **shadcn-svelte** bajo la estética Zinc Ultra Dark.
+* Organizar las columnas esenciales de control: *Destinatario*, *Tipo de Alerta*, *Canal*, *Intentos*, *Estado* y *Fecha*.
 
-## Slice 4.7: Formulario de Configuración de Canales y Test-Email 🔥
 
-> **Objetivo:** Proveer interfaz interactiva para alterar los parámetros de red de los servidores de envío sin tocar código fuente.
+* [ ] **4.6.3 — Estados de Envío Reactivos:**
+* Usar lógica condicional nativa de Svelte 5 para pintar badges dinámicos basados en el estado del envío (verde suave para completados, amarillo para pendientes y rojo con indicación del error para envíos fallidos).
 
-```
-[ ] Diseñar componente de configuración en `apps/web/src/routes/dashboard/notifications/settings/+page.svelte`
-    [ ] Crear el formulario reactivo en Svelte 5 para los parámetros SMTP (Host, Puerto, Usuario, Contraseña, Encriptación TLS/SSL)
-    [ ] Enlazar las variables del formulario usando la sintaxis nativa de bindeo de Runes
-    [ ] Implementar un botón secundario "Probar Conexión" que dispare una petición al endpoint `/test-smtp`, capture los errores crudos devuelvos por Rust y los renderice en un bloque de código monospaciado en caso de error de red o credenciales
 
-```
 
 ---
 
-## Slice 4.8: Pruebas de Carga de la Cola, Reintentos y Fallo de Red 🔥
+## Slice 4.7: Formulario de Configuración y Test-Email (Svelte 5 + Zod) 🛠️
 
-> **Objetivo:** Garantizar que el subsistema de notificaciones es inmune a las interrupciones imprevistas y no satura los recursos del servidor del Beni.
+> **Objetivo:** Proveer un panel administrativo interactivo en la ruta `/dashboard/notifications/settings` para cambiar parámetros de red sin tocar el código fuente.
 
-```
-[ ] Prueba 1 (Simulación offline): Desactivar localmente el acceso al puerto SMTP de pruebas, disparar una alerta y confirmar mediante base de datos que el log pasa a estado `FAILED` reflejando el mensaje exacto del socket caído de red.
-[ ] Prueba 2 (Concurrencia masiva): Inyectar 100 alertas simultáneas simuladas en la base de datos. Verificar con `bacon` o telemetría que el servidor de Axum sigue respondiendo peticiones HTTP en menos de 5ms mientras la cola procesa en background de forma lineal sin bloquear la API principal.
-[ ] Prueba 3 (Flujo feliz E2E): Activar credenciales válidas, simular un evento de red, validar almacenamiento inmediato del log, encolamiento automático, despacho limpio de correo y actualización visual asíncrona reflejada en la UI de Svelte 5.
+* [ ] **4.7.1 — Contrato de Validación con Zod:**
+* Crear el esquema estricto en el frontend con **Zod** para validar en tiempo real los inputs de configuración SMTP (servidor, puerto numérico, usuario y contraseñas obligatorias) antes de enviarlos a la API de Rust.
 
-```
+
+* [ ] **4.7.2 — Construcción del Formulario con shadcn:**
+* Renderizar los campos de texto usando componentes de formulario de **shadcn-svelte**, vinculando las variables de forma reactiva con los estados del cliente.
+
+
+* [ ] **4.7.3 — Botón de Test y Mutación:**
+* Implementar un `createMutation` de TanStack Query enlazado al botón de "Probar Conexión" para disparar la alerta fantasma, capturar respuestas y desplegar diagnósticos crudos en pantalla en caso de fallos de red.
+
+
 
 ---
 
-## Entregable del Módulo 4
+## Slice 4.8: Pruebas de Carga de la Cola y Simulación Offline 🏁
 
-Al finalizar este slice, tu software de control regional procesará cualquier contingencia crítica de infraestructura de manera desacoplada. Ninguna lentitud o caída del servidor de correos institucional congelará el backend de Axum ni afectará la experiencia del operador en la interfaz de Svelte 5. El motor de notificaciones operará de forma autónoma y con control total de auditoría.
+> **Objetivo:** Garantizar que el subsistema es inmune a interrupciones y caídas del servidor local.
+
+* [ ] **4.8.1 — Prueba de Red Caída:**
+* Cortar intencionalmente el acceso al puerto SMTP de pruebas, simular un incidente y verificar visualmente en **MySQL Workbench** que los logs registran el estado de fallo junto con la descripción exacta del socket desconectado.
+
+
+* [ ] **4.8.2 — Prueba de Concurrencia Masiva:**
+* Inyectar en lote un número elevado de registros ficticios en la base de datos y validar mediante tus consolas de Bacon que el backend de Axum sigue atendiendo peticiones en milisegundos mientras el hilo de background trabaja de forma secuencial.
+
+
+* [ ] **4.8.3 — Certificación E2E de Extremo a Extremo:**
+* Realizar un flujo completo: simular una falla en Workbench, verificar el almacenamiento asíncrono, el encolamiento en segundo plano y confirmar que el registro aparece actualizado en la UI de Svelte 5 de manera transparente.

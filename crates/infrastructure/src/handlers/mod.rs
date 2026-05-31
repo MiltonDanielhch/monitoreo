@@ -6,10 +6,12 @@ pub mod auth_handler;
 pub mod dashboard_handler;
 pub mod devices_handler;
 pub mod locations_handler;
+pub mod notification_handler;
 pub mod settings_handler;
 
 pub use auth_handler::{login, refresh, logout};
 pub use dashboard_handler::{get_dashboard_stats, get_recent_alerts};
 pub use devices_handler::get_devices;
 pub use locations_handler::get_locations;
+pub use notification_handler::{get_notification_logs, test_smtp_connection};
 pub use settings_handler::{get_thresholds, update_thresholds};

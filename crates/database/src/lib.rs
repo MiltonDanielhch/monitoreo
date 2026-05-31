@@ -13,6 +13,7 @@ pub mod repositories;
 
 pub use repositories::AuthRepository;
 pub use repositories::DashboardRepository;
+pub use repositories::NotificationRepository;
 pub use repositories::SettingsRepository;
 
 pub async fn establish_connection(db_url: &str) -> Result<DatabaseConnection, DbErr> {
