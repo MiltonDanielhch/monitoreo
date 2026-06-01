@@ -20,7 +20,7 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 | **8.4** | Worker de Mantenimiento y Pruning de Datos Históricos | `ADR-0004`, `ADR-0009` | [x] |
 | **8.5** | Orquestador de Tareas Cron y Planificación de Horarios | `ADR-0015` | [x] |
 | **8.6** | Dashboard de Monitoreo de Colas y Estado (Svelte 5 + UI) | `ADR-0017` [JOBS] | [x] |
-| **8.7** | Panel de Configuración de Umbrales de Depuración | `ADR-0017` [SETTINGS] | [ ] |
+| **8.7** | Panel de Configuración de Umbrales de Depuración | `ADR-0017` [SETTINGS] | [x] |
 | **8.8** | Pruebas de Recuperación ante Cortes de Base de Datos y Overload | `ADR-0010` | [ ] |
 | **M8** | **Módulo 8 Total** |  | **[ ]** |
 
