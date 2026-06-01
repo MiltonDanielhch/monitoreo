@@ -14,12 +14,12 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **8.1** | Inicialización de Canales Tokio MPSC y Workers | `ADR-0004`, `ADR-0015` | [ ] |
-| **8.2** | Worker de Alta Frecuencia: Monitoreo ICMP / Ping Resiliente | `ADR-0001`, `ADR-0012` | [ ] |
-| **8.3** | Worker de Descubrimiento Automático SNMPv3 (Cada 6 horas) | `ADR-0001`, `ADR-0014` | [ ] |
-| **8.4** | Worker de Mantenimiento y Pruning de Datos Históricos | `ADR-0004`, `ADR-0009` | [ ] |
-| **8.5** | Orquestador de Tareas Cron y Planificación de Horarios | `ADR-0015` | [ ] |
-| **8.6** | Dashboard de Monitoreo de Colas y Estado (Svelte 5 + UI) | `ADR-0017` [JOBS] | [ ] |
+| **8.1** | Inicialización de Canales Tokio MPSC y Workers | `ADR-0004`, `ADR-0015` | [x] |
+| **8.2** | Worker de Alta Frecuencia: Monitoreo ICMP / Ping Resiliente | `ADR-0001`, `ADR-0012` | [x] |
+| **8.3** | Worker de Descubrimiento Automático SNMPv3 (Cada 6 horas) | `ADR-0001`, `ADR-0014` | [x] |
+| **8.4** | Worker de Mantenimiento y Pruning de Datos Históricos | `ADR-0004`, `ADR-0009` | [x] |
+| **8.5** | Orquestador de Tareas Cron y Planificación de Horarios | `ADR-0015` | [x] |
+| **8.6** | Dashboard de Monitoreo de Colas y Estado (Svelte 5 + UI) | `ADR-0017` [JOBS] | [x] |
 | **8.7** | Panel de Configuración de Umbrales de Depuración | `ADR-0017` [SETTINGS] | [ ] |
 | **8.8** | Pruebas de Recuperación ante Cortes de Base de Datos y Overload | `ADR-0010` | [ ] |
 | **M8** | **Módulo 8 Total** |  | **[ ]** |

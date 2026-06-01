@@ -60,6 +60,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/locations", get(handlers::locations_handler::get_locations))
         .route("/api/devices", get(handlers::get_devices))
         .route("/api/workers/stats", get(handlers::get_worker_stats))
+        .route("/api/workers/config", get(handlers::get_worker_config))
+        .route("/api/workers/config", put(handlers::update_worker_config))
         .route("/api/v1/notifications/logs", post(handlers::notification_handler::get_notification_logs))
         .route("/api/v1/notifications/test-smtp", post(handlers::notification_handler::test_smtp_connection))
         .route("/api/v1/infrastructure/upload", post(handlers::infrastructure_file_handler::upload_file))

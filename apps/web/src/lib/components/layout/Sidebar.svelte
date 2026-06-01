@@ -15,6 +15,7 @@
 		{ href: '/dashboard/alertas', label: 'Alertas', icon: AlertTriangle, badge: 0, description: 'Incidentes críticos' },
 		{ href: '/dashboard/notifications', label: 'Notificaciones', icon: Mail, description: 'Historial de alertas enviadas' },
 		{ href: '/dashboard/workers', label: 'Workers', icon: Cpu, description: 'Monitoreo de tareas en segundo plano' },
+		{ href: '/dashboard/jobs/settings', label: 'Config. Workers', icon: Settings, description: 'Configuración de workers' },
 		{ href: '/dashboard/infrastructure', label: 'Infraestructura', icon: Settings, description: 'Archivos técnicos y topologías' },
 		{ href: '/dashboard/audit', label: 'Auditoría', icon: ShieldAlert, description: 'Historial inmutable de acciones' },
 		{ href: '/dashboard/agents', label: 'Agentes', icon: Server, description: 'Conectividad de agentes remotos' },
