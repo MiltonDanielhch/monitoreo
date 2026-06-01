@@ -10,6 +10,7 @@ use axum::{
 use serde::Serialize;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
+use crate::AppState;
 
 /// Estado global de estadísticas de workers
 #[derive(Clone)]
@@ -136,8 +137,9 @@ pub struct ErrorResponse {
 
 /// Handler para obtener estadísticas de workers
 pub async fn get_worker_stats(
-    State(stats): State<Arc<WorkerStats>>,
+    State(state): State<AppState>,
 ) -> Result<Json<WorkerStatsResponse>, (StatusCode, Json<ErrorResponse>)> {
+    let stats = &state.worker_stats;
     let ping_success = stats.ping_success.load(Ordering::Relaxed);
     let ping_failures = stats.ping_failures.load(Ordering::Relaxed);
     let ping_avg_latency = stats.ping_avg_latency.load(Ordering::Relaxed);

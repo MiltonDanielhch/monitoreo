@@ -6,7 +6,7 @@
 // Realiza la inyección de dependencias y el arranque del runtime Tokio
 
 use database::{establish_connection, AuthRepository, SettingsRepository, DashboardRepository};
-use infrastructure::{create_router, AppState, config::RuntimeConfig};
+use infrastructure::{create_router, AppState, config::RuntimeConfig, handlers::WorkerStats};
 use tokio::net::TcpListener;
 use std::env;
 use std::sync::Arc;
@@ -54,6 +54,8 @@ async fn main() -> anyhow::Result<()> {
     let paseto_secret = env::var("JWT_SECRET")
         .unwrap_or_else(|_| "default-secret-32-bytes-long-12345678".to_string());
 
+    let worker_stats = Arc::new(WorkerStats::new());
+
     let state = AppState {
         db: db_connection,
         auth_repo,
@@ -61,6 +63,7 @@ async fn main() -> anyhow::Result<()> {
         dashboard_repo,
         runtime_config,
         paseto_secret: SecretString::new(paseto_secret.into()),
+        worker_stats,
     };
     
     tracing::info!("Creando router Axum...");
