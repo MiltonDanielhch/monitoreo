@@ -31,6 +31,7 @@
 | ⏳ **M9: Reportes Analíticos** | `ROADMAP_MODULO_9_REPORTES.md` | Pendiente | 0% |
 | ⏳ **M10: Despliegue & Sync** | `ROADMAP_MODULO_10_DESPLIEGUE.md` | Pendiente | 0% |
 | ⏳ **M11: Detección de Intrusiones** | `ROADMAP_MODULO_11_INTRUSIONES_SEGURIDAD.md` | Pendiente | 0% |
+| ⏳ **M12: Descubrimiento de Red** | `ROADMAP_MODULO_12_DESCUBRIMIENTO_RED.md` | Pendiente | 0% |
 
 ## Contexto Operativo (ADR 0020)
 
