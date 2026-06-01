@@ -11,6 +11,7 @@ pub mod locations_handler;
 pub mod notification_handler;
 pub mod settings_handler;
 pub mod telemetry_handler;
+pub mod worker_stats_handler;
 
 pub use auth_handler::{login, refresh, logout};
 pub use audit_handler::{get_audit_logs, get_entity_history};
@@ -21,3 +22,4 @@ pub use locations_handler::get_locations;
 pub use notification_handler::{get_notification_logs, test_smtp_connection};
 pub use settings_handler::{get_thresholds, update_thresholds};
 pub use telemetry_handler::{ingest_telemetry, register_agent};
+pub use worker_stats_handler::{get_worker_stats, WorkerStats};
