@@ -11,8 +11,10 @@ use std::time::{Duration, Instant};
 use chrono::{Duration as ChronoDuration, Utc};
 
 pub mod session_cleanup;
+pub mod scheduler;
 
 pub use session_cleanup::spawn_session_cleanup_worker;
+pub use scheduler::spawn_scheduler;
 
 /// Tipos de comandos de jobs para workers en segundo plano
 #[derive(Debug, Clone)]
