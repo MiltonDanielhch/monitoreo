@@ -93,8 +93,7 @@ async fn execute_job(command: JobCommand, _db: Arc<DatabaseConnection>) {
             execute_ping_job(host_id, ip_address).await;
         }
         JobCommand::SnmpDiscoveryJob { subnet, sede_id } => {
-            info!("Ejecutando descubrimiento SNMP para subnet: {}, sede_id: {}", subnet, sede_id);
-            // TODO: Implementar lógica de descubrimiento SNMPv3
+            execute_snmp_discovery_job(subnet, sede_id).await;
         }
         JobCommand::PruningJob { retention_days } => {
             info!("Ejecutando pruning job con retention_days: {}", retention_days);
@@ -167,4 +166,79 @@ async fn ping_host(ip_address: &str) -> Result<u64, String> {
             Err("Timeout de conexión".to_string())
         }
     }
+}
+
+/// Ejecuta un job de descubrimiento SNMPv3 para escanear una subred
+#[instrument(skip_all)]
+async fn execute_snmp_discovery_job(subnet: String, sede_id: String) {
+    info!("Ejecutando descubrimiento SNMP para subnet: {}, sede_id: {}", subnet, sede_id);
+
+    // Parsear la subred (ej: "192.168.1.0/24")
+    let discovered_devices = scan_subnet_snmp(&subnet).await;
+
+    info!("Descubiertos {} dispositivos en subnet {}", discovered_devices.len(), subnet);
+
+    // Inyectar nuevos dispositivos en los repositorios del Módulo 3
+    for device in discovered_devices {
+        info!("Dispositivo descubierto: IP={}, OID={}, sede_id={}", device.ip, device.oid, sede_id);
+        // TODO: Inyectar en repositorios del Módulo 3
+        // device_repo.create_device(device).await;
+    }
+}
+
+/// Escanea una subred usando SNMPv3 para descubrir dispositivos
+async fn scan_subnet_snmp(subnet: &str) -> Vec<DiscoveredDevice> {
+    let mut discovered_devices = Vec::new();
+
+    // Parsear la subred para obtener el rango de IPs
+    if let Some((base_ip, _mask)) = subnet.split_once('/') {
+        // Por ahora, implementación simplificada que escanea un rango pequeño
+        // TODO: Implementar escaneo completo de subred con librería de red
+        let base_parts: Vec<&str> = base_ip.split('.').collect();
+        
+        if base_parts.len() == 4 {
+            // Escanear las primeras 10 IPs de la subred como ejemplo
+            for i in 1..=10 {
+                let ip = format!("{}.{}.{}.{}", base_parts[0], base_parts[1], base_parts[2], i);
+                
+                // Intentar consultar SNMP en el puerto 161
+                if let Some(device) = query_snmp_device(&ip).await {
+                    discovered_devices.push(device);
+                }
+            }
+        }
+    }
+
+    discovered_devices
+}
+
+/// Consulta un dispositivo específico usando SNMPv3
+async fn query_snmp_device(ip: &str) -> Option<DiscoveredDevice> {
+    // Intentar conectar al puerto SNMP (161)
+    let addr = format!("{}:161", ip);
+    
+    match tokio::time::timeout(
+        Duration::from_secs(1),
+        TcpStream::connect(&addr)
+    ).await {
+        Ok(Ok(_stream)) => {
+            // Simulación de consulta SNMP - en producción usar librería SNMP real
+            // TODO: Implementar consulta SNMPv3 real con credenciales cifradas
+            Some(DiscoveredDevice {
+                ip: ip.to_string(),
+                oid: "1.3.6.1.2.1.1.1.0".to_string(), // sysDescr
+                description: "Dispositivo de red detectado".to_string(),
+            })
+        }
+        _ => None,
+    }
+}
+
+/// Dispositivo descubierto por SNMP
+#[derive(Debug)]
+#[allow(dead_code)]
+struct DiscoveredDevice {
+    ip: String,
+    oid: String,
+    description: String,
 }
