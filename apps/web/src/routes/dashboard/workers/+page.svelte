@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { createQuery } from '@tanstack/svelte-query';
 
   // Tipos de respuesta del API
   interface WorkerStatsResponse {
@@ -21,31 +20,30 @@
   let isLoading = $state(true);
   let error = $state<string | null>(null);
 
-  // Query de TanStack para obtener estadísticas de workers
-  const workerStatsQuery = createQuery({
-    queryKey: ['worker-stats'],
-    queryFn: async () => {
+  // Función para cargar estadísticas
+  async function loadStats() {
+    try {
+      isLoading = true;
+      error = null;
       const response = await fetch('/api/workers/stats');
       if (!response.ok) {
         throw new Error('Error al obtener estadísticas de workers');
       }
-      return response.json() as Promise<WorkerStatsResponse>;
-    },
-    refetchInterval: 5000, // Refrescar cada 5 segundos
-  });
-
-  // Actualizar estado cuando cambia el query
-  $: {
-    if (workerStatsQuery.data) {
-      stats = workerStatsQuery.data;
-      isLoading = false;
-      error = null;
-    }
-    if (workerStatsQuery.error) {
+      stats = await response.json();
+    } catch (e) {
       error = 'Error al cargar estadísticas';
+      console.error(e);
+    } finally {
       isLoading = false;
     }
   }
+
+  // Cargar estadísticas al montar y cada 5 segundos
+  onMount(() => {
+    loadStats();
+    const interval = setInterval(loadStats, 5000);
+    return () => clearInterval(interval);
+  });
 
   // Formatear timestamp a fecha legible
   function formatTimestamp(timestamp: number): string {
