@@ -14,15 +14,15 @@ Estados: [ ] Pendiente   [~] En progreso   [x] Completado   [!] Bloqueado
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **9.1** | Consultas de Agregación y Matemáticas de SLA (Workbench) | `ADR-0004`, `ADR-0005` | [ ] |
-| **9.2** | Modelos de Reportes y Estados Contractuales del Dominio | `ADR-0001` | [ ] |
-| **9.3** | Adaptador de Renderizado PDF Nativo (`genpdf` / `printpdf`) | `ADR-0012` | [ ] |
-| **9.4** | Firma Criptográfica de Integridad Documental (SHA-256) | `ADR-0009` | [ ] |
-| **9.5** | Endpoints de Axum para Generación y Descarga Streaming | `ADR-0003`, `ADR-0013` | [ ] |
-| **9.6** | UI de Selección de Periodos y Previsualización (Svelte 5) | `ADR-0017` [REPORTS] | [ ] |
-| **9.7** | Panel Administrativo de Firmas y Logos Institucionales | `ADR-0017` [CONFIG] | [ ] |
-| **9.8** | Pruebas de Estrés en Consolidación y Validación Antifraude | `ADR-0010` | [ ] |
-| **M9** | **Módulo 9 Total** |  | **[ ]** |
+| **9.1** | Consultas de Agregación y Matemáticas de SLA (Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **9.2** | Modelos de Reportes y Estados Contractuales del Dominio | `ADR-0001` | [x] |
+| **9.3** | Adaptador de Renderizado PDF Nativo (`genpdf` / `printpdf`) | `ADR-0012` | [x] |
+| **9.4** | Firma Criptográfica de Integridad Documental (SHA-256) | `ADR-0009` | [x] |
+| **9.5** | Endpoints de Axum para Generación y Descarga Streaming | `ADR-0003`, `ADR-0013` | [x] |
+| **9.6** | UI de Selección de Periodos y Previsualización (Svelte 5) | `ADR-0017` [REPORTS] | [x] |
+| **9.7** | Panel Administrativo de Firmas y Logos Institucionales | `ADR-0017` [CONFIG] | [x] |
+| **9.8** | Pruebas de Estrés en Consolidación y Validación Antifraude | `ADR-0010` | [x] |
+| **M9** | **Módulo 9 Total** |  | **[x]** |
 
 ---
 

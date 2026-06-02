@@ -9,6 +9,8 @@ pub mod notification;
 pub mod infrastructure_file;
 pub mod audit;
 pub mod telemetry;
+pub mod security;
+pub mod report;
 
 pub use user::User;
 pub use session::Session;
@@ -21,3 +23,7 @@ pub use notification::{
 pub use infrastructure_file::{NetworkFileType, FileValidator, InfrastructureFile, NetworkStoragePort};
 pub use audit::{AuditLog, AuditAction, AuditFilters, AuditPort};
 pub use telemetry::{RemoteAgent, AgentType, AgentStatus, TelemetryMetrics, TelemetryBatch, TelemetryPort};
+pub use security::{
+    IntrusionType, Severity, SecurityStatus, SecurityEvent, SecurityFilters, SecurityPort, DomainError
+};
+pub use report::{SlaReport, SlaStatus, ReportType, SlaMetrics, ReportFilters};

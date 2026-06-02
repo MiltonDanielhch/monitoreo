@@ -14,15 +14,15 @@
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **11.1** | Esquema de Eventos de Seguridad (Workbench) | `ADR-0004`, `ADR-0005` | [ ] |
-| **11.2** | Modelos de Seguridad y Contratos de Detección | `ADR-0001` | [ ] |
-| **11.3** | Repositorio de Eventos de Seguridad (Sea-ORM) | `ADR-0004` | [ ] |
-| **11.4** | Motor de Detección de Patrones Anómalos | `ADR-0015` | [ ] |
-| **11.5** | Endpoints HTTP/2 Seguros para Eventos de Seguridad | `ADR-0003`, `ADR-0006` | [ ] |
-| **11.6** | Dashboard de Intrusiones (Svelte 5 + UI) | `ADR-0017` [INTRUSIONS] | [ ] |
-| **11.7** | Correlación de Eventos con Telemetría | `ADR-0017` [CORRELATION] | [ ] |
-| **11.8** | Pruebas de Detección y Validación de Alertas | `ADR-0010` | [ ] |
-| **M11** | **Módulo 11 Total** |  | **[ ]** |
+| **11.1** | Esquema de Eventos de Seguridad (Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **11.2** | Modelos de Seguridad y Contratos de Detección | `ADR-0001` | [x] |
+| **11.3** | Repositorio de Eventos de Seguridad (Sea-ORM) | `ADR-0004` | [x] |
+| **11.4** | Motor de Detección de Patrones Anómalos | `ADR-0015` | [x] |
+| **11.5** | Endpoints HTTP/2 Seguros para Eventos de Seguridad | `ADR-0003`, `ADR-0006` | [x] |
+| **11.6** | Dashboard de Intrusiones (Svelte 5 + UI) | `ADR-0017` [INTRUSIONS] | [x] |
+| **11.7** | Correlación de Eventos con Telemetría | `ADR-0017` [CORRELATION] | [x] |
+| **11.8** | Pruebas de Detección y Validación de Alertas | `ADR-0010` | [x] |
+| **M11** | **Módulo 11 Total** |  | **[x]** |
 
 ---
 

@@ -9,6 +9,8 @@ pub mod devices_handler;
 pub mod infrastructure_file_handler;
 pub mod locations_handler;
 pub mod notification_handler;
+pub mod report_handler;
+pub mod security_handler;
 pub mod settings_handler;
 pub mod telemetry_handler;
 pub mod worker_stats_handler;
@@ -21,6 +23,11 @@ pub use devices_handler::get_devices;
 pub use infrastructure_file_handler::{download_file, list_files, upload_file};
 pub use locations_handler::get_locations;
 pub use notification_handler::{get_notification_logs, test_smtp_connection};
+pub use report_handler::{generate_sla_report, download_sla_report, get_sla_summary};
+pub use security_handler::{
+    log_security_event, get_security_events, get_security_event_by_id,
+    resolve_security_event, mark_false_positive, get_events_by_severity
+};
 pub use settings_handler::{get_thresholds, update_thresholds};
 pub use telemetry_handler::{ingest_telemetry, register_agent};
 pub use worker_stats_handler::{get_worker_stats, WorkerStats};

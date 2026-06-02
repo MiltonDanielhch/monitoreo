@@ -10,12 +10,14 @@ pub mod crypto;
 pub mod handlers;
 pub mod middleware;
 pub mod notifications;
+pub mod reports;
+pub mod security;
 pub mod storage;
 pub mod telemetry;
 pub mod workers;
 
 use axum::{routing::{get, post, put}, Json, Router, extract::State};
-use database::{DatabaseConnection, AuthRepository, SettingsRepository, DashboardRepository};
+use database::{DatabaseConnection, AuthRepository, SettingsRepository, DashboardRepository, SecurityRepository, ReportRepository};
 use crate::config::RuntimeConfig;
 use crate::handlers::WorkerStats;
 use tower_http::cors::{CorsLayer, Any};
@@ -30,6 +32,8 @@ pub struct AppState {
     pub auth_repo: Arc<AuthRepository>,
     pub settings_repo: Arc<SettingsRepository>,
     pub dashboard_repo: Arc<DashboardRepository>,
+    pub security_repo: Arc<SecurityRepository>,
+    pub report_repo: Arc<ReportRepository>,
     pub runtime_config: RuntimeConfig,
     pub paseto_secret: SecretString,
     pub worker_stats: Arc<WorkerStats>,
@@ -71,6 +75,15 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/v1/audit/entity-history", get(handlers::audit_handler::get_entity_history))
         .route("/api/v1/telemetry/ingest", post(handlers::telemetry_handler::ingest_telemetry))
         .route("/api/v1/telemetry/register", post(handlers::telemetry_handler::register_agent))
+        .route("/api/v1/security/events", post(handlers::security_handler::log_security_event))
+        .route("/api/v1/security/events", get(handlers::security_handler::get_security_events))
+        .route("/api/v1/security/events/{id}", get(handlers::security_handler::get_security_event_by_id))
+        .route("/api/v1/security/events/{id}/resolve", put(handlers::security_handler::resolve_security_event))
+        .route("/api/v1/security/events/{id}/false-positive", put(handlers::security_handler::mark_false_positive))
+        .route("/api/v1/security/events/severity/{severity}", get(handlers::security_handler::get_events_by_severity))
+        .route("/api/v1/reports/sla/generate", get(handlers::report_handler::generate_sla_report))
+        .route("/api/v1/reports/sla/download", get(handlers::report_handler::download_sla_report))
+        .route("/api/v1/reports/sla/summary", get(handlers::report_handler::get_sla_summary))
         .layer(TraceLayer::new_for_http())
         .with_state(state)
         .layer(cors)

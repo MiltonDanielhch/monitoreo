@@ -7,6 +7,8 @@ pub mod audit_repository;
 pub mod dashboard_repository;
 pub mod network_file_repository;
 pub mod notification_repository;
+pub mod report_repository;
+pub mod security_repository;
 pub mod settings_repository;
 pub mod telemetry_repository;
 
@@ -15,5 +17,7 @@ pub use audit_repository::AuditRepository;
 pub use dashboard_repository::DashboardRepository;
 pub use network_file_repository::NetworkFileRepository;
 pub use notification_repository::NotificationRepository;
+pub use report_repository::{ReportRepository, SlaMonthlyAggregation, SlaFilters, GlobalSlaStats};
+pub use security_repository::SecurityRepository;
 pub use settings_repository::SettingsRepository;
 pub use telemetry_repository::TelemetryRepository;

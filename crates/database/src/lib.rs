@@ -16,6 +16,8 @@ pub use repositories::AuditRepository;
 pub use repositories::DashboardRepository;
 pub use repositories::NetworkFileRepository;
 pub use repositories::NotificationRepository;
+pub use repositories::ReportRepository;
+pub use repositories::SecurityRepository;
 pub use repositories::SettingsRepository;
 pub use repositories::TelemetryRepository;
 
