@@ -11,6 +11,7 @@ pub mod audit;
 pub mod telemetry;
 pub mod security;
 pub mod report;
+pub mod discovery;
 
 pub use user::User;
 pub use session::Session;
@@ -27,3 +28,7 @@ pub use security::{
     IntrusionType, Severity, SecurityStatus, SecurityEvent, SecurityFilters, SecurityPort, DomainError
 };
 pub use report::{SlaReport, SlaStatus, ReportType, SlaMetrics, ReportFilters};
+pub use discovery::{
+    DeviceType, ScanStatus, DeviceStatus, DiscoveredDevice, NetworkScan,
+    DiscoveryFilters, ScanFilters, DiscoveryPort
+};

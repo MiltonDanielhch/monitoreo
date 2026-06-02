@@ -5,7 +5,7 @@
 // Este es el punto de entrada principal del servidor Axum
 // Realiza la inyección de dependencias y el arranque del runtime Tokio
 
-use database::{establish_connection, AuthRepository, SettingsRepository, DashboardRepository, ReportRepository, SecurityRepository};
+use database::{establish_connection, AuthRepository, SettingsRepository, DashboardRepository, ReportRepository, SecurityRepository, DiscoveryRepository};
 use infrastructure::{create_router, AppState, config::RuntimeConfig, handlers::WorkerStats};
 use tokio::net::TcpListener;
 use std::env;
@@ -45,6 +45,7 @@ async fn main() -> anyhow::Result<()> {
     let dashboard_repo = Arc::new(DashboardRepository::new(db_connection.clone()));
     let report_repo = Arc::new(ReportRepository::new(Arc::new(db_connection.clone())));
     let security_repo = Arc::new(SecurityRepository::new(Arc::new(db_connection.clone())));
+    let discovery_repo = Arc::new(DiscoveryRepository::new(Arc::new(db_connection.clone())));
 
     let thresholds = ThresholdSettings {
         ping_ms: ThresholdValue::new(100.0, 500.0).unwrap(),
@@ -63,8 +64,9 @@ async fn main() -> anyhow::Result<()> {
         auth_repo,
         settings_repo,
         dashboard_repo,
-        report_repo,
+        discovery_repo,
         security_repo,
+        report_repo,
         runtime_config,
         paseto_secret: SecretString::new(paseto_secret.into()),
         worker_stats,

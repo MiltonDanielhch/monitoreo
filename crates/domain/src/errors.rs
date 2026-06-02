@@ -63,6 +63,22 @@ pub enum DomainError {
 
     #[error("Error de almacenamiento de archivos: {0}")]
     FileStorageError(String),
+
+    // Errores del dominio de descubrimiento de red - Módulo 12
+    #[error("Dispositivo no encontrado: {0}")]
+    DeviceNotFound(String),
+
+    #[error("Escaneo no encontrado: {0}")]
+    ScanNotFound(String),
+
+    #[error("Rango de IP inválido: {0}")]
+    InvalidIpRange(String),
+
+    #[error("Fabricante OUI no encontrado para MAC: {0}")]
+    OuiNotFound(String),
+
+    #[error("Clasificación de dispositivo fallida: {0}")]
+    ClassificationError(String),
 }
 
 pub type Result<T> = std::result::Result<T, DomainError>;

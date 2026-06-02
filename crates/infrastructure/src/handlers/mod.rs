@@ -5,6 +5,7 @@
 pub mod auth_handler;
 pub mod audit_handler;
 pub mod dashboard_handler;
+pub mod discovery_handler;
 pub mod devices_handler;
 pub mod infrastructure_file_handler;
 pub mod locations_handler;
@@ -19,6 +20,11 @@ pub mod worker_config_handler;
 pub use auth_handler::{login, refresh, logout};
 pub use audit_handler::{get_audit_logs, get_entity_history};
 pub use dashboard_handler::{get_dashboard_stats, get_recent_alerts};
+pub use discovery_handler::{
+    start_network_scan, get_discovered_devices, get_device_by_ip,
+    mark_device_authorized, mark_device_unauthorized, get_network_scans,
+    get_network_scan_by_id, get_scan_progress
+};
 pub use devices_handler::get_devices;
 pub use infrastructure_file_handler::{download_file, list_files, upload_file};
 pub use locations_handler::get_locations;

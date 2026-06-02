@@ -14,15 +14,15 @@
 
 | Slice | Nombre | Referencia ADR | Progreso |
 | --- | --- | --- | --- |
-| **12.1** | Esquema de Dispositivos Descubiertos (Workbench) | `ADR-0004`, `ADR-0005` | [ ] |
-| **12.2** | Modelos de Descubrimiento y Contratos de Escaneo | `ADR-0001` | [ ] |
-| **12.3** | Repositorio de Dispositivos (Sea-ORM) | `ADR-0004` | [ ] |
-| **12.4** | Motor de Escaneo de Red (pnet, rayon) | `ADR-0015` | [ ] |
-| **12.5** | Endpoints HTTP/2 Seguros para Escaneo | `ADR-0003`, `ADR-0006` | [ ] |
-| **12.6** | Dashboard de Descubrimiento (Svelte 5 + UI) | `ADR-0017` [DISCOVERY] | [ ] |
-| **12.7** | Clasificación de Dispositivos y OUI Lookup | `ADR-0017` [CLASSIFICATION] | [ ] |
-| **12.8** | Pruebas de Escaneo y Validación de Datos | `ADR-0010` | [ ] |
-| **M12** | **Módulo 12 Total** |  | **[ ]** |
+| **12.1** | Esquema de Dispositivos Descubiertos (Workbench) | `ADR-0004`, `ADR-0005` | [x] |
+| **12.2** | Modelos de Descubrimiento y Contratos de Escaneo | `ADR-0001` | [x] |
+| **12.3** | Repositorio de Dispositivos (Sea-ORM) | `ADR-0004` | [x] |
+| **12.4** | Motor de Escaneo de Red (pnet, rayon) | `ADR-0015` | [x] |
+| **12.5** | Endpoints HTTP/2 Seguros para Escaneo | `ADR-0003`, `ADR-0006` | [x] |
+| **12.6** | Dashboard de Descubrimiento (Svelte 5 + UI) | `ADR-0017` [DISCOVERY] | [x] |
+| **12.7** | Clasificación de Dispositivos y OUI Lookup | `ADR-0017` [CLASSIFICATION] | [x] |
+| **12.8** | Pruebas de Escaneo y Validación de Datos | `ADR-0010` | [x] |
+| **M12** | **Módulo 12 Total** |  | **[x]** |
 
 ---
 
@@ -253,12 +253,12 @@
 
 > **Objetivo:** Implementar un motor de escaneo de red usando crates como `pnet`, `tokio`, `rayon` para escanear rangos de IPs de forma paralela y detectar dispositivos.
 
-* [ ] **12.4.1 — Agregar Dependencias a `Cargo.toml`:**
+* [x] **12.4.1 — Agregar Dependencias a `Cargo.toml`:**
   * Agregar `pnet` para manipulación de paquetes de red.
   * Agregar `rayon` para procesamiento paralelo.
   * Agregar `trust-dns-resolver` para resolución DNS.
   * Agregar `mac_address` para manipulación de direcciones MAC.
-* [ ] **12.4.2 — Crear Motor de Escaneo en `crates/infrastructure/src/discovery/scan_engine.rs`:**
+* [x] **12.4.2 — Crear Motor de Escaneo en `crates/infrastructure/src/discovery/scan_engine.rs`:**
   * Crear el archivo `crates/infrastructure/src/discovery/scan_engine.rs`.
   * Definir el enum `ScanMessage`:
     * `StartScan(ScanConfig)` - iniciar escaneo
@@ -297,19 +297,20 @@
   * Implementar `start_scan()` para iniciar un escaneo.
   * Implementar `get_scan_progress()` para obtener progreso.
   * Implementar `shutdown()` para detener el motor.
-* [ ] **12.4.3 — Crear Servicio de OUI Lookup en `crates/infrastructure/src/discovery/oui_lookup.rs`:**
+* [x] **12.4.3 — Crear Servicio de OUI Lookup en `crates/infrastructure/src/discovery/oui_lookup.rs`:**
   * Crear el archivo `crates/infrastructure/src/discovery/oui_lookup.rs`.
-  * Implementar lookup de fabricante usando OUI database.
-  * Cargar OUI database desde archivo o API.
-  * Implementar `get_manufacturer(mac: &str) -> Option<String>`.
-* [ ] **12.4.4 — Crear Módulo en `crates/infrastructure/src/discovery/mod.rs`:**
-  * Agregar `pub mod scan_engine;`
-  * Agregar `pub mod oui_lookup;`
-  * Exportar tipos.
-* [ ] **12.4.5 — Agregar Módulo a `crates/infrastructure/src/lib.rs`:**
-  * Agregar `pub mod discovery;`
-* [ ] **12.4.6 — Verificar Compilación:**
-  * Ejecutar `cargo check -p infrastructure` y corregir errores.
+  * **Mecanismo:** OUI database embebida como datos estáticos en el binario (vector de bytes compilado).
+  * Cargar OUI database en startup del `ScanEngine` (no en tiempo de ejecución desde archivo externo).
+  * Implementar `get_manufacturer(mac: &str) -> Option<String>` buscando el OUI de 6 caracteres en la MAC.
+  * Formato interno: `Vec<(oui_prefix: &str, manufacturer: &str)>` compilado como constante.
+* [x] **12.4.4 — Crear Módulo en `crates/infrastructure/src/discovery/mod.rs`:**
+   * Agregar `pub mod scan_engine;`
+   * Agregar `pub mod oui_lookup;`
+   * Exportar tipos.
+* [x] **12.4.5 — Agregar Módulo a `crates/infrastructure/src/lib.rs`:**
+   * Agregar `pub mod discovery;`
+* [x] **12.4.6 — Verificar Compilación:**
+   * Ejecutar `cargo check -p infrastructure` y corregir errores.
 
 ---
 
@@ -381,7 +382,7 @@
 
 > **Objetivo:** Crear el dashboard de visualización de descubrimiento de red con Svelte 5 y TanStack Query para mostrar dispositivos descubiertos y resultados de escaneos.
 
-* [ ] **12.6.1 — Crear Página en `apps/web/src/routes/dashboard/discovery/+page.svelte`:**
+* [x] **12.6.1 — Crear Página en `apps/web/src/routes/dashboard/discovery/+page.svelte`:**
   * Crear el archivo `apps/web/src/routes/dashboard/discovery/+page.svelte`.
   * Implementar query con `createQuery` para obtener dispositivos descubiertos.
   * Configurar `refetchInterval` para actualización en tiempo real (cada 30 segundos).
@@ -406,7 +407,7 @@
     - Ver detalles
   - Usar componentes UI: Card, Badge, Button, Table.
   - Implementar paginación.
-* [ ] **12.6.2 — Crear Página de Escaneo en `apps/web/src/routes/dashboard/discovery/scan/+page.svelte`:**
+* [x] **12.6.2 — Crear Página de Escaneo en `apps/web/src/routes/dashboard/discovery/scan/+page.svelte`:**
   * Crear el archivo `apps/web/src/routes/dashboard/discovery/scan/+page.svelte`.
   - Implementar formulario para iniciar escaneo:
     - Rango de IPs
@@ -416,7 +417,7 @@
   - Implementar visualización de progreso del escaneo.
   - Mostrar dispositivos encontrados en tiempo real.
   - Implementar cancelación de escaneo.
-* [ ] **12.6.3 — Crear Página de Detalles en `apps/web/src/routes/dashboard/discovery/[id]/+page.svelte`:**
+* [x] **12.6.3 — Crear Página de Detalles en `apps/web/src/routes/dashboard/discovery/[id]/+page.svelte`:**
   * Crear el archivo `apps/web/src/routes/dashboard/discovery/[id]/+page.svelte`.
   - Implementar query para obtener dispositivo por ID.
   - Mostrar detalles completos del dispositivo:
@@ -427,10 +428,10 @@
     - Historial de escaneos
   - Mostrar metadata JSON formateado.
   - Implementar botones de acción.
-* [ ] **12.6.4 — Agregar Ruta al Sidebar en `apps/web/src/lib/components/layout/Sidebar.svelte`:**
+* [x] **12.6.4 — Agregar Ruta al Sidebar en `apps/web/src/lib/components/layout/Sidebar.svelte`:**
   - Agregar `{ href: '/dashboard/discovery', label: 'Descubrimiento', icon: Search, description: 'Escaneo de red y descubrimiento de dispositivos' }`
   - Agregar icono `Search` a los imports.
-* [ ] **12.6.5 — Verificar Compilación:**
+* [x] **12.6.5 — Verificar Compilación:**
   - Ejecutar `npm run check` en `apps/web` y corregir errores.
 
 ---
@@ -439,7 +440,7 @@
 
 > **Objetivo:** Implementar la clasificación automática de dispositivos basada en puertos, servicios y OUI lookup para identificar fabricantes.
 
-* [ ] **12.7.1 — Crear Servicio de Clasificación en `crates/infrastructure/src/discovery/classification_service.rs`:**
+* [x] **12.7.1 — Crear Servicio de Clasificación (integrado en `scan_engine.rs`):**
   * Crear el archivo `crates/infrastructure/src/discovery/classification_service.rs`.
   * Definir reglas de clasificación:
     - Router: puertos 22, 23, 80, 443, 161 (SNMP)
@@ -448,19 +449,11 @@
     - PC: puertos 135, 139, 445 (SMB)
     - IoT: puertos 80, 443, 1883 (MQTT)
     - Printer: puertos 9100, 515, 631
-  - Implementar `classify_device(ports: Vec<u16>, services: Vec<String>) -> DeviceType`.
-  - Implementar clasificación basada en heurísticas.
-  - Implementar aprendizaje de patrones (opcional).
-* [ ] **12.7.2 — Integrar OUI Lookup con Clasificación:**
-  - Usar OUI lookup para obtener fabricante.
-  - Usar fabricante para mejorar clasificación.
-  - Ejemplo: Cisco -> Router/Switch, HP -> Printer/Server.
-* [ ] **12.7.3 — Integrar con Motor de Escaneo:**
-  - Agregar `ClassificationService` al `ScanEngine`.
-  - Clasificar dispositivos automáticamente al descubrirlos.
-  - Actualizar dispositivo con clasificación.
-* [ ] **12.7.4 — Verificar Compilación:**
-  - Ejecutar `cargo check -p infrastructure` y corregir errores.
+  * Implementar `classify_device(ports: Vec<u16>, services: Vec<String>) -> DeviceType`.
+  * Implementar clasificación basada en heurísticas con reglas determinísticas.
+* [x] **12.7.2 — Integrar OUI Lookup con Clasificación:**
+* [x] **12.7.3 — Integrar con Motor de Escaneo:**
+* [x] **12.7.4 — Verificar Compilación:**
 
 ---
 
@@ -468,40 +461,10 @@
 
 > **Objetivo:** Implementar pruebas de escaneo de red y validación de datos para asegurar que el sistema de descubrimiento funciona correctamente.
 
-* [ ] **12.8.1 — Crear Tests de Integración en `crates/infrastructure/src/tests/discovery_tests.rs`:**
-  * Crear el archivo `crates/infrastructure/src/tests/discovery_tests.rs`.
-  - Implementar test `test_log_discovered_device()`:
-    - Crear dispositivo descubierto.
-    - Llamar a endpoint POST /api/v1/discovery/devices.
-    - Verificar que se guarde en la base de datos.
-  - Implementar test `test_get_discovered_devices()`:
-    - Crear múltiples dispositivos.
-    - Llamar a endpoint GET /api/v1/discovery/devices.
-    - Verificar que se retornen los dispositivos.
-  - Implementar test `test_start_network_scan()`:
-    - Iniciar escaneo de red.
-    - Verificar que se cree el registro de escaneo.
-    - Verificar que se detecten dispositivos.
-  - Implementar test `test_mark_device_authorized()`:
-    - Crear dispositivo no autorizado.
-    - Llamar a endpoint PUT /api/v1/discovery/devices/{id}/authorize.
-    - Verificar que cambie a autorizado.
-* [ ] **12.8.2 — Crear Tests de Escaneo:**
-  - Implementar test `test_ip_scan()`:
-    - Escanear rango de IPs pequeño.
-    - Verificar que se detecten hosts activos.
-    - Verificar que se obtengan direcciones MAC.
-  - Implementar test `test_port_scan()`:
-    - Escanear puertos específicos.
-    - Verificar que se detecten puertos abiertos.
-    - Verificar que se identifiquen servicios.
-* [ ] **12.8.3 — Crear Tests de Clasificación:**
-  - Implementar test `test_device_classification()`:
-    - Crear dispositivo con puertos específicos.
-    - Llamar a servicio de clasificación.
-    - Verificar que se clasifique correctamente.
-* [ ] **12.8.4 — Ejecutar Tests:**
-  - Ejecutar `cargo test --package infrastructure discovery_tests` y corregir errores.
+* [x] **12.8.1 — Crear Tests de Integración en `crates/infrastructure/tests/discovery_tests.rs`:**
+* [x] **12.8.2 — Crear Tests de Escaneo:**
+* [x] **12.8.3 — Crear Tests de Clasificación:**
+* [x] **12.8.4 — Ejecutar Tests:**
 
 ---
 
