@@ -65,10 +65,19 @@
 	];
 
 	function isActive(href: string): boolean {
-		if (href === '/dashboard') {
-			return page.url.pathname === '/dashboard';
+		// Si la ruta base es idéntica, está activo
+		if (page.url.pathname === href) {
+			return true;
 		}
-		return page.url.pathname.startsWith(href);
+		
+		// Para rutas raíz o genéricas, evitamos que hagan match parcial con sub-rutas
+		if (href === '/dashboard' || href === '/dashboard/discovery') {
+			return page.url.pathname === href;
+		}
+		
+		// Para el resto de rutas (ej. /dashboard/notifications), mantenemos el startsWith 
+		// pero asegurando el cierre de barra '/' para evitar colisiones de texto
+		return page.url.pathname.startsWith(href + '/');
 	}
 </script>
 
