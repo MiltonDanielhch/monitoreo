@@ -1,8 +1,6 @@
 # ==========================================
 # Docker Compose para Producción - API + Web
 # ==========================================
-# MySQL se gestiona SEPARADO en Coolify como servicio propio
-# Uso: docker-compose -f infrastructure/docker/docker-compose.yaml up -d
 
 services:
   # -----------------------------------------
@@ -19,6 +17,8 @@ services:
       RUST_LOG: info
     ports:
       - "3001:8000"
+    networks:
+      - coolify
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/health"]
       interval: 30s
@@ -34,9 +34,18 @@ services:
       dockerfile: infrastructure/docker/production.Dockerfile.web
     container_name: monitoreo_web
     restart: unless-stopped
-    # Coolify maneja el proxy, no necesita puertos expuestos
+    networks:
+      - coolify
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+# ==========================================
+# Definición de la red de Coolify
+# ==========================================
+networks:
+  coolify:
+    external: true
+    name: coolify
