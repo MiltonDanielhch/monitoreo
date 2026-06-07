@@ -3,11 +3,13 @@
 # ==========================================
 # Builder - Compilación Rust/Axum
 # ==========================================
-FROM rust:alpine AS builder
+FROM rust:bookworm AS builder
 WORKDIR /app
 
 # Instalar dependencias para compilación
-RUN apk add --no-cache musl-dev gcc libressl-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config libssl-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copiar código completo del workspace
 COPY . .
