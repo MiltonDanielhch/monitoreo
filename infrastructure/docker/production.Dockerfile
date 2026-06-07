@@ -47,9 +47,6 @@ WORKDIR /app
 # Copiar el binario compilado desde la etapa constructora
 COPY --from=builder /app/target/release/api /app/server
 
-# Copiar archivos de configuración globales necesarios o assets estáticos
-COPY .env.production /app/.env
-
 # Coolify leerá este puerto para mapear el tráfico web
 EXPOSE 8000
 
