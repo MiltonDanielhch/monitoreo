@@ -32,9 +32,9 @@ FROM nginx:alpine AS runtime
 # Crear estructura de directorios correcta
 RUN mkdir -p /usr/share/nginx/html
 
-# Copiar archivos estáticos compilados de SvelteKit
-# SvelteKit genera los archivos en .svelte-kit/output/
-COPY --from=builder /app/apps/web/.svelte-kit/output /usr/share/nginx/html
+# === ¡CAMBIO AQUÍ! ===
+# Copiar archivos estáticos reales generados por @sveltejs/adapter-static
+COPY --from=builder /app/apps/web/build /usr/share/nginx/html
 
 # Copiar configuración de nginx
 COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
