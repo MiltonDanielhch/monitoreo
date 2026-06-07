@@ -48,4 +48,4 @@ services:
 networks:
   coolify:
     external: true
-    name: coolify
+    name: coolify-network
