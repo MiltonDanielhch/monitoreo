@@ -6,13 +6,13 @@ WORKDIR /app
 RUN apk add --no-cache musl-dev gcc
 RUN cargo install cargo-chef --version 0.1.68
 
-# Copiar manifiestos para analizar dependencias del monorepo
+# Copiar workspace completo (manifiestos + código fuente)
 COPY Cargo.toml Cargo.lock ./
-COPY crates/domain/Cargo.toml ./crates/domain/
-COPY crates/database/Cargo.toml ./crates/database/
-COPY crates/infrastructure/Cargo.toml ./crates/infrastructure/
-COPY crates/shared_types/Cargo.toml ./crates/shared_types/
-COPY apps/api/Cargo.toml ./apps/api/
+COPY crates/domain ./crates/domain/
+COPY crates/database ./crates/database/
+COPY crates/infrastructure ./crates/infrastructure/
+COPY crates/shared_types ./crates/shared_types/
+COPY apps/api ./apps/api/
 
 RUN cargo chef prepare --recipe-path recipe.json
 
@@ -26,6 +26,14 @@ RUN cargo install cargo-chef --version 0.1.68
 
 # Copiar la receta analizada en la Etapa 1
 COPY --from=planner /app/recipe.json recipe.json
+
+# Copiar workspace completo para compilar dependencias
+COPY Cargo.toml Cargo.lock ./
+COPY crates/domain ./crates/domain/
+COPY crates/database ./crates/database/
+COPY crates/infrastructure ./crates/infrastructure/
+COPY crates/shared_types ./crates/shared_types/
+COPY apps/api ./apps/api/
 
 # Compilar solo las dependencias en modo Release (Capas de caché de Docker)
 RUN cargo chef cook --release --recipe-path recipe.json
