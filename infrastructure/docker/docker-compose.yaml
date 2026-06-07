@@ -1,8 +1,8 @@
 # ==========================================
-# Docker Compose para Coolify - API + Web
+# Docker Compose para Producción - API + Web
 # ==========================================
 # MySQL se gestiona SEPARADO en Coolify como servicio propio
-# Uso: docker-compose -f docker-compose.coolify.yml up -d
+# Uso: docker-compose -f infrastructure/docker/docker-compose.yaml up -d
 
 services:
   # -----------------------------------------
