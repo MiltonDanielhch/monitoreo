@@ -34,8 +34,9 @@ services:
       dockerfile: infrastructure/docker/production.Dockerfile.web
     container_name: monitoreo_web
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - api
+    # Coolify maneja el proxy, no necesita puertos expuestos
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
