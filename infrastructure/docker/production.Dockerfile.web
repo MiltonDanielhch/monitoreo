@@ -9,15 +9,17 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Instalar dependencias del proyecto
-COPY apps/web/package.json apps/web/pnpm-lock.yaml* ./
+# Copiar package.json y lockfile
+COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+
+# Habilitar pnpm
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
-# Copiar solo lo necesario para instalar deps
-COPY apps/web/ ./
-
 # Instalar dependencias
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
+
+# Copiar resto del código
+COPY apps/web/ ./
 
 # Build de la aplicación
 RUN pnpm build
