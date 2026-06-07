@@ -1,62 +1,39 @@
 # ==========================================
-# ETAPA 1: Planificador (cargo-chef)
-# ==========================================
-FROM rust:1.85-alpine AS planner
-WORKDIR /app
-RUN apk add --no-cache musl-dev gcc
-RUN cargo install cargo-chef --version 0.1.68
-
-# Copiar workspace completo (manifiestos + código fuente)
-COPY Cargo.toml Cargo.lock ./
-COPY crates/domain ./crates/domain/
-COPY crates/database ./crates/database/
-COPY crates/infrastructure ./crates/infrastructure/
-COPY crates/shared_types ./crates/shared_types/
-COPY apps/api ./apps/api/
-
-RUN cargo chef prepare --recipe-path recipe.json
-
-# ==========================================
-# ETAPA 2: Constructor de Dependencias (Caché)
+# Builder - Compilación Rust/Axum
 # ==========================================
 FROM rust:1.85-alpine AS builder
 WORKDIR /app
+
+# Instalar dependencias para compilación
 RUN apk add --no-cache musl-dev gcc libressl-dev
-RUN cargo install cargo-chef --version 0.1.68
 
-# Copiar la receta analizada en la Etapa 1
-COPY --from=planner /app/recipe.json recipe.json
-
-# Copiar workspace completo para compilar dependencias
+# Copiar manifiestos primero para caché de dependencias
 COPY Cargo.toml Cargo.lock ./
-COPY crates/domain ./crates/domain/
-COPY crates/database ./crates/database/
-COPY crates/infrastructure ./crates/infrastructure/
-COPY crates/shared_types ./crates/shared_types/
+COPY crates/domain/Cargo.toml ./crates/domain/
+COPY crates/database/Cargo.toml ./crates/database/
+COPY crates/infrastructure/Cargo.toml ./crates/infrastructure/
+COPY crates/shared_types/Cargo.toml ./crates/shared_types/
+COPY apps/api/Cargo.toml ./apps/api/
+
+# Descargar dependencias (caché de capas Docker)
+RUN cargo fetch
+
+# Copiar código fuente completo
+COPY crates ./crates/
 COPY apps/api ./apps/api/
 
-# Compilar solo las dependencias en modo Release (Capas de caché de Docker)
-RUN cargo chef cook --release --recipe-path recipe.json
-
-# ==========================================
-# ETAPA 3: Compilación del Código Fuente
-# ==========================================
-COPY . .
-# Forzar la compilación estática del binario nativo de Axum
+# Compilar en modo Release
 RUN cargo build --release --bin api
 
 # ==========================================
-# ETAPA 4: Imagen de Ejecución Inmaculada (Runtime)
+# Runtime - Imagen distroless mínima
 # ==========================================
-# Usamos distroless/cc para máxima seguridad y mínimo tamaño (contiene musl y certificados SSL)
 FROM gcr.io/distroless/cc-debian12:latest AS runtime
 WORKDIR /app
 
-# Copiar el binario compilado desde la etapa constructora
+# Copiar solo el binario compilado
 COPY --from=builder /app/target/release/api /app/server
 
-# Coolify leerá este puerto para mapear el tráfico web
 EXPOSE 8000
 
-# Comando de ejecución por defecto
 CMD ["/app/server"]
