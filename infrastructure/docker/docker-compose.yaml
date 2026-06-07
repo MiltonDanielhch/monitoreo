@@ -24,6 +24,11 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    # 👇 ¡AÑADE ESTAS LÍNEAS AQUÍ!
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitoreo-api.rule=Host(`q134cgq11nmsrzqkh8040bny.190.129.54.198.sslip.io`)"
+      - "traefik.http.services.monitoreo-api.loadbalancer.server.port=8000"
 
   # -----------------------------------------
   # Web Frontend - SvelteKit + Nginx
@@ -41,6 +46,11 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    # 👇 ¡AÑADE ESTAS LÍNEAS AQUÍ!
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitoreo-web.rule=Host(`eq30msyqrc2nrzeqdyxv7ohb.190.129.54.198.sslip.io`)"
+      - "traefik.http.services.monitoreo-web.loadbalancer.server.port=80"
 
 # ==========================================
 # Definición de la red de Coolify
