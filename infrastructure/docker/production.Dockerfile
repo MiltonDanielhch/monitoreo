@@ -3,7 +3,7 @@
 # ==========================================
 # Builder - Compilación Rust/Axum
 # ==========================================
-FROM rust:1.85-alpine AS builder
+FROM rust:alpine AS builder
 WORKDIR /app
 
 # Instalar dependencias para compilación
