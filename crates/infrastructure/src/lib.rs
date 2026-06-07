@@ -55,6 +55,7 @@ pub fn create_router(state: AppState) -> Router {
         .allow_headers(Any);
 
     Router::new()
+        .route("/health", get(health_check_root))
         .route("/api/health", get(health_check))
         .route("/api/auth/login", post(handlers::auth_handler::login))
         .route("/api/auth/refresh", post(handlers::auth_handler::refresh))
@@ -106,4 +107,8 @@ async fn health_check(State(state): State<AppState>) -> Json<HealthResponse> {
         status: "OK".to_string(),
         database: if db_alive { "Conectada" } else { "Desconectada" }.to_string(),
     })
+}
+
+async fn health_check_root() -> &'static str {
+    "OK"
 }

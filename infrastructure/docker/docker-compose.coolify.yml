@@ -1,0 +1,41 @@
+# ==========================================
+# Docker Compose para Coolify - API + Web
+# ==========================================
+# MySQL se gestiona SEPARADO en Coolify como servicio propio
+# Uso: docker-compose -f docker-compose.coolify.yml up -d
+
+services:
+  # -----------------------------------------
+  # API Backend - Rust/Axum
+  # -----------------------------------------
+  api:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/production.Dockerfile
+    container_name: monitoreo_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      RUST_LOG: info
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------
+  # Web Frontend - SvelteKit + Nginx
+  # -----------------------------------------
+  web:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/production.Dockerfile.web
+    container_name: monitoreo_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
