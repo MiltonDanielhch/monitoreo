@@ -7,7 +7,7 @@
 # ETAPA 1: Builder
 # ==========================================
 FROM node:22-alpine AS builder
-WORKDIR /app
+WORKDIR /app/apps/web
 
 # Copiar package.json y lockfile
 COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
@@ -15,10 +15,13 @@ COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 # Habilitar pnpm
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
+# Instalar dependencias
+RUN pnpm install
+
 # Copiar resto del código
 COPY apps/web/ ./
 
-# Build de la aplicación (se ejecuta en /app que ya tiene apps/web/)
+# Build de la aplicación
 RUN pnpm build
 
 # ==========================================
@@ -30,7 +33,7 @@ FROM nginx:alpine AS runtime
 RUN mkdir -p /usr/share/nginx/html
 
 # Copiar archivos estáticos compilados de SvelteKit
-# pnpm build genera los archivos en apps/web/build/
+# pnpm build genera los archivos en /app/apps/web/build/
 COPY --from=builder /app/apps/web/build /usr/share/nginx/html
 
 # Copiar configuración de nginx
