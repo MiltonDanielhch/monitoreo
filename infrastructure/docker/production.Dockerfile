@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copiar código completo del workspace
 COPY . .
 
-# Compilar en modo Release
-RUN cargo build --release --bin api
+# Compilar en modo Release limiting parallel jobs to save RAM
+RUN CARGO_BUILD_JOBS=1 cargo build --release --bin api
 
 # ==========================================
 # Runtime - Imagen distroless mínima
