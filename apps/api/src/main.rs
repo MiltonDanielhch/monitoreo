@@ -33,7 +33,9 @@ async fn main() -> anyhow::Result<()> {
     // Fallback seguro en caso de requerir valores por defecto nativos
     let database_url = env::var("DATABASE_URL")
         .unwrap_or_else(|_| "mysql://root:Milton123@127.0.0.1:3306/redes_dev".to_string());
-    let port = env::var("SERVER_PORT").unwrap_or_else(|_| "3000".to_string());
+    
+    // CÓDIGO 3026: Ajustado el puerto por defecto a 8000 para sincronía perfecta con Coolify
+    let port = env::var("SERVER_PORT").unwrap_or_else(|_| "8000".to_string());
 
     tracing::info!("Conectando a base de datos...");
     let db_connection = establish_connection(&database_url).await
