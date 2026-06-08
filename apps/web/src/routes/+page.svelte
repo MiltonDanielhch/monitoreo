@@ -2,9 +2,13 @@
 	let backendStatus = $state<'loading' | 'connected' | 'disconnected'>('loading');
 	let dbStatus = $state<'loading' | 'connected' | 'disconnected'>('loading');
 
+	// CÓDIGO 3026: Enlace de producción unificado directo a la API en Axum
+	const API_URL = 'http://q5q91n0vgnt82ofr4alpioip.190.129.54.198.sslip.io';
+
 	async function checkHealth() {
 		try {
-			const response = await fetch('http://localhost:3000/api/health');
+			// Cambiado localhost por la ruta del contenedor productivo validado
+			const response = await fetch(`${API_URL}/api/health`);
 			const data = await response.json();
 			
 			if (data.status === 'OK') {
@@ -33,7 +37,6 @@
 		<h1 class="text-3xl font-bold text-center mb-8">Sistema de Monitoreo Regional</h1>
 		
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-			<!-- Backend Status Card -->
 			<div class="bg-white rounded-lg shadow-md p-6">
 				<h2 class="text-xl font-semibold mb-4">Backend API</h2>
 				<div class="flex items-center">
@@ -50,7 +53,6 @@
 				</div>
 			</div>
 
-			<!-- Database Status Card -->
 			<div class="bg-white rounded-lg shadow-md p-6">
 				<h2 class="text-xl font-semibold mb-4">Base de Datos MySQL</h2>
 				<div class="flex items-center">
