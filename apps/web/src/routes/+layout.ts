@@ -6,6 +6,10 @@ import { redirect } from '@sveltejs/kit';
 import { browser } from '$app/environment';
 import type { LayoutLoad } from './$types';
 
+// CONFIGURACIÓN VITAL PARA COMPILAR COMO SPA EN COOLIFY/NGINX
+export const prerender = false;
+export const ssr = false;
+
 const PROTECTED_PATHS = ['/dashboard', '/infraestructura', '/admin', '/operaciones'];
 
 export const load: LayoutLoad = ({ url }) => {

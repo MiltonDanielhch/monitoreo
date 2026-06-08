@@ -13,7 +13,7 @@ const config = {
             assets: 'build',
             fallback: 'index.html', // Importante: Habilita el modo Single Page App (SPA)
             precompress: false,
-            strict: true
+            strict: false
         })
     }
 };
