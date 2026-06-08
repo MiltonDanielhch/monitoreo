@@ -1,0 +1,18 @@
+# Rust local artifacts
+target/
+**/*.rs.bk
+
+# Node / SvelteKit local artifacts
+node_modules/
+apps/web/.sst/
+apps/web/.svelte-kit/
+apps/web/build/
+apps/web/dist/
+
+# Git and OS metadata
+.git
+.gitignore
+.github
+.idea
+.vscode
+*.md

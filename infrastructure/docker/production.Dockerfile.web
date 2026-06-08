@@ -1,20 +1,32 @@
 # ==========================================
-# SvelteKit Web - Producción
+# Fase 1: Builder (SvelteKit Web Aislado)
 # ==========================================
 FROM node:22-alpine AS builder
+
+# Nos paramos directamente en el entorno de la aplicación web
 WORKDIR /app/apps/web
 
-# Copiar package.json y lockfile
-COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+# Activar pnpm v10 idéntico al de tu terminal local
+RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
-# Habilitar pnpm
-RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
-
-# Instalar dependencias
-RUN pnpm install
-
-# Copiar resto del código
+# 1. COPIAMOS TODO EL CÓDIGO FUENTE PRIMERO
+# Esto incluye package.json, lockfile, src, componentes, etc.
 COPY apps/web/ ./
 
-# Build de la aplicación
+# 2. LUEGO INSTALAMOS LAS DEPENDENCIAS
+# Al hacerlo en este orden, node_modules se genera sobre un entorno limpio y nada lo pisará
+RUN pnpm install --frozen-lockfile --modules-dir ./node_modules
+
+# 3. EJECUTAR EL BUILD ESTÁTICO NATIVO
 RUN pnpm build
+
+# ==========================================
+# Fase 2: Runtime (Nginx Servidor Estático)
+# ==========================================
+FROM nginx:1.25-alpine AS runtime
+
+# Extraer el build limpio hacia el directorio público de Nginx
+COPY --from=builder /app/apps/web/build /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
