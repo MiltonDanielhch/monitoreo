@@ -9,9 +9,9 @@ const config = {
     kit: {
         // Configuración para el adaptador estático de producción
         adapter: adapter({
-            pages: 'build',       # Directorio donde se guardarán los HTML/JS/CSS
-            assets: 'build',      
-            fallback: 'index.html', # Importante: Habilita el modo Single Page App (SPA)
+            pages: 'build',       // Directorio donde se guardarán los HTML/JS/CSS
+            assets: 'build',
+            fallback: 'index.html', // Importante: Habilita el modo Single Page App (SPA)
             precompress: false,
             strict: true
         })
