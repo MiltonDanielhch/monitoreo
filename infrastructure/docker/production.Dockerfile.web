@@ -1,27 +1,20 @@
 # ==========================================
 # SvelteKit Web - Producción
 # ==========================================
-# Multi-stage build para minimizar imagen final
-
-# ==========================================
-# ETAPA 1: Builder
-# ==========================================
 FROM node:22-alpine AS builder
-WORKDIR /app
-
-# 1. Instalar pnpm usando npm de forma global (más estable en Alpine que corepack)
-RUN npm install -g pnpm@9.0.0
-
-# 2. Copiar archivos de configuración de dependencias
-COPY apps/web/package.json ./apps/web/
-COPY apps/web/pnpm-lock.yaml ./apps/web/
-
-# 3. Entrar a la carpeta e instalar dependencias congeladas
 WORKDIR /app/apps/web
-RUN pnpm install --frozen-lockfile
 
-# 4. Copiar todo el código fuente
+# Copiar package.json y lockfile
+COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+
+# Habilitar pnpm
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+
+# Instalar dependencias
+RUN pnpm install
+
+# Copiar resto del código
 COPY apps/web/ ./
 
-# 5. Ejecutar el build obligando a Vite a mostrar el error en consola si falla
+# Build de la aplicación
 RUN pnpm build
