@@ -19,3 +19,25 @@ run-web:
 check-all:
     cargo check --workspace
     cd apps/web; pnpm check
+
+# --- Comandos de Base de Datos (ADR-0005) ---
+
+# Obtener URL de base de datos desde .env.local
+get-db-url:
+    powershell -Command "Get-Content .env.local | Select-String 'DATABASE_URL' | ForEach-Object { $_.ToString().Split('=')[1] }"
+
+# Ejecutar migraciones y seeds de desarrollo
+db-migrate:
+    powershell -File ./scripts/db-migrate.ps1
+
+# Ejecutar migraciones y seeds en producción (con confirmación)
+db-migrate-prod:
+    powershell -File ./scripts/db-migrate-prod.ps1
+
+# Ver estado de migraciones aplicadas
+db-status:
+    powershell -File ./scripts/db-status.ps1
+
+# Resetear base de datos local (peligroso - solo desarrollo)
+db-reset:
+    powershell -File ./scripts/db-reset.ps1
